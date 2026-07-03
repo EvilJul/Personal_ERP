@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server'
 import { z } from 'zod'
 import { isAuthenticated } from '@/lib/auth'
 import { getHabitById, updateHabit, deleteHabit } from '@/db/queries/habits'
+import { evaluateRules } from '@/engine/rules'
 
 export const dynamic = 'force-dynamic'
 
@@ -100,6 +101,8 @@ export async function DELETE(request: Request, { params }: RouteParams) {
         { status: 404 }
       )
     }
+
+    evaluateRules('habits').catch(console.error)
 
     return NextResponse.json({ success: true })
   } catch (error) {

@@ -109,6 +109,8 @@ export async function DELETE(request: Request, { params }: RouteParams) {
       )
     }
 
+    evaluateRules('goals').catch(console.error)
+
     return NextResponse.json({ success: true })
   } catch (error) {
     return NextResponse.json(

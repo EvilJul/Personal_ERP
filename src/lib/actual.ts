@@ -15,6 +15,21 @@ type SyncResult = {
   syncedAt: string
 }
 
+// 超时时间：30 秒
+const TIMEOUT_MS = 30000
+
+/**
+ * 为 Promise 添加超时控制
+ */
+async function withTimeout<T>(promise: Promise<T>, ms: number = TIMEOUT_MS): Promise<T> {
+  return Promise.race([
+    promise,
+    new Promise<never>((_, reject) =>
+      setTimeout(() => reject(new Error(`操作超时 (${ms}ms)`)), ms)
+    )
+  ])
+}
+
 /**
  * 连接 Actual Budget 服务器并下载预算数据
  * 必须在操作完成后调用 disconnectActual() 释放连接
@@ -37,13 +52,13 @@ export async function connectToActual() {
     throw new Error('ACTUAL_PASSWORD 环境变量未配置')
   }
 
-  await api.init({
+  await withTimeout(api.init({
     dataDir: CACHE_DIR,
     serverURL,
     password,
-  })
+  }))
 
-  await api.downloadBudget(budgetId, { password })
+  await withTimeout(api.downloadBudget(budgetId, { password }))
 }
 
 /**

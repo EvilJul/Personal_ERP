@@ -12,6 +12,9 @@ const CreateGoalSchema = z.object({
   currentValue: z.number().optional(),
   unit: z.string().optional(),
   deadline: z.string().optional(),
+  linkedModules: z.array(z.string()).optional().transform(
+    (val) => val ? JSON.stringify(val) : undefined
+  ),
 })
 
 /** GET /api/goals - 获取所有目标 */

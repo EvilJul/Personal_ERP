@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server'
 import { z } from 'zod'
 import { isAuthenticated } from '@/lib/auth'
 import { getAllHabits, createHabit } from '@/db/queries/habits'
+import { getGoalById } from '@/db/queries/goals'
 
 export const dynamic = 'force-dynamic'
 
@@ -51,6 +52,17 @@ export async function POST(request: Request) {
         { error: parsed.error.message, code: 'VALIDATION_ERROR' },
         { status: 400 }
       )
+    }
+
+    // 校验关联目标是否存在
+    if (parsed.data.linkedGoalId) {
+      const goal = getGoalById(parsed.data.linkedGoalId)
+      if (!goal) {
+        return NextResponse.json(
+          { error: '关联目标不存在', code: 'NOT_FOUND' },
+          { status: 400 }
+        )
+      }
     }
 
     const newHabit = createHabit(parsed.data)
