@@ -146,6 +146,8 @@
   }
   body {
     @apply bg-background text-foreground;
+    background-image: radial-gradient(circle, #e2e8f0 1px, transparent 1px);
+    background-size: 24px 24px;
   }
   html {
     @apply font-sans;
@@ -270,4 +272,11 @@
 /* 分页切换 fade */
 .fade-transition {
   transition: opacity 0.2s ease;
+}
+
+/* 卡片内阴影 - 营造微妙的立体感 */
+.card-inner-shadow {
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.8),
+    0 1px 3px rgba(0, 0, 0, 0.04);
 }

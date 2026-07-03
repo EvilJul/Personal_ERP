@@ -178,7 +178,7 @@ export default async function DashboardPage() {
     .map(b => ({ id: b.id, icon: b.icon, name: b.name }))
 
   return (
-    <main className="min-h-screen pb-20 md:pb-4 animate-fade-in-up" style={{ background: 'linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%)' }}>
+    <main className="min-h-screen pb-20 md:pb-4 animate-fade-in-up bg-gradient-to-br from-slate-50 via-white to-slate-50">
       <div className="mx-auto max-w-5xl px-4 py-6 md:px-6 md:py-8 space-y-6">
         {/* 统计卡片栏 + 成就图标 */}
         <StatsBar
