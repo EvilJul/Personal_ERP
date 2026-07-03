@@ -73,7 +73,7 @@ npm run typecheck
 - **UI**: shadcn/ui + Tailwind CSS v4
 - **数据库**: SQLite + Drizzle ORM
 - **认证**: JWT (jose)
-- **测试**: Playwright
+- **测试**: Vitest (单元/API) + Playwright (E2E)
 
 ## 项目结构
 

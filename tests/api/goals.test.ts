@@ -142,6 +142,58 @@ describe('Goals API', () => {
       const res = await POST(req)
       expect(res.status).toBe(401)
     })
+
+    it('linkedModules 为 string[] 时正确转换为 JSON 字符串', async () => {
+      const req = createRequest('http://localhost/api/goals', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          title: '带模块关联的目标',
+          targetValue: 100,
+          linkedModules: ['habits', 'finance'],
+        }),
+      })
+      const res = await POST(req)
+      expect(res.status).toBe(201)
+      const body = await res.json()
+      expect(body).toHaveProperty('id')
+      // 验证 createGoal 被调用时 linkedModules 已转为 JSON 字符串
+      const { createGoal } = await import('@/db/queries/goals')
+      const lastCall = vi.mocked(createGoal).mock.calls[vi.mocked(createGoal).mock.calls.length - 1]
+      expect(lastCall[0].linkedModules).toBe(JSON.stringify(['habits', 'finance']))
+    })
+
+    it('linkedModules 为非数组时返回 400', async () => {
+      const req = createRequest('http://localhost/api/goals', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          title: '非法模块关联',
+          targetValue: 100,
+          linkedModules: 'habits',
+        }),
+      })
+      const res = await POST(req)
+      expect(res.status).toBe(400)
+      const body = await res.json()
+      expect(body.code).toBe('VALIDATION_ERROR')
+    })
+
+    it('linkedModules 为 undefined 时不传该字段', async () => {
+      const req = createRequest('http://localhost/api/goals', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          title: '无模块关联',
+          targetValue: 50,
+        }),
+      })
+      const res = await POST(req)
+      expect(res.status).toBe(201)
+      const { createGoal } = await import('@/db/queries/goals')
+      const lastCall = vi.mocked(createGoal).mock.calls[vi.mocked(createGoal).mock.calls.length - 1]
+      expect(lastCall[0].linkedModules).toBeUndefined()
+    })
   })
 
   describe('PUT /api/goals/[id]', () => {

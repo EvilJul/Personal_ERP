@@ -26,6 +26,8 @@ volumes:
 
 ### 2. 创建 Dockerfile
 
+> 使用 Next.js standalone output 模式，仅打包运行时必要文件，镜像体积显著减小。
+
 ```dockerfile
 # 构建阶段
 FROM node:18-alpine AS builder
@@ -43,15 +45,14 @@ FROM node:18-alpine
 
 WORKDIR /app
 
-COPY package*.json ./
-RUN npm ci --omit=dev
-
-COPY --from=builder /app/.next ./.next
+# standalone 输出已包含所需依赖，无需再次 npm ci
+COPY --from=builder /app/.next/standalone ./
+COPY --from=builder /app/.next/static ./.next/static
 COPY --from=builder /app/public ./public
 
 EXPOSE 3000
 
-CMD ["npm", "start"]
+CMD ["node", "server.js"]
 ```
 
 ### 3. 启动

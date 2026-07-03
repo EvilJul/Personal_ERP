@@ -358,6 +358,46 @@ describe('Habits API', () => {
       expect(body.code).toBe('VALIDATION_ERROR')
     })
 
+    it('对已打卡的日期再次打卡返回 unchecked', async () => {
+      // 先创建习惯
+      const createReq = createRequest('http://localhost/api/habits', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ title: 'toggle 测试习惯' }),
+      })
+      const createRes = await POST(createReq)
+      const { id } = await createRes.json()
+
+      // 第一次打卡
+      const firstCheckin = createRequest(
+        `http://localhost/api/habits/${id}/checkin`,
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ date: '2026-07-03' }),
+        }
+      )
+      const firstRes = await CHECKIN(firstCheckin, createParams(id))
+      expect(firstRes.status).toBe(201)
+      const firstBody = await firstRes.json()
+      expect(firstBody.action).toBe('checked')
+
+      // 对同一日期再次打卡 → toggle 取消
+      const secondCheckin = createRequest(
+        `http://localhost/api/habits/${id}/checkin`,
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ date: '2026-07-03' }),
+        }
+      )
+      const secondRes = await CHECKIN(secondCheckin, createParams(id))
+      expect(secondRes.status).toBe(200)
+      const secondBody = await secondRes.json()
+      expect(secondBody.action).toBe('unchecked')
+      expect(secondBody.entry).toBeNull()
+    })
+
     it('未认证返回 401', async () => {
       vi.mocked(isAuthenticated).mockResolvedValue(false)
       const req = createRequest(
