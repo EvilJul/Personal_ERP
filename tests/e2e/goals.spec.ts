@@ -43,23 +43,23 @@ test.describe('目标 CRUD', () => {
   test('创建目标后应能在列表中看到编辑和删除按钮', async ({ page }) => {
     await page.goto('/goals')
     // 列表中至少有一个目标卡片（来自上一个测试）
-    const firstGoalCard = page.locator('.rounded-lg.border').first()
-    await expect(firstGoalCard.locator('button', { hasText: '编辑' })).toBeVisible()
+    const firstGoalCard = page.locator('.rounded-xl.border').first()
+    await expect(firstGoalCard.getByRole('link', { name: '编辑' })).toBeVisible()
     await expect(firstGoalCard.locator('button', { hasText: '删除' })).toBeVisible()
   })
 
   test('点击编辑应进入编辑页面', async ({ page }) => {
     await page.goto('/goals')
-    const editButton = page.locator('button', { hasText: '编辑' }).first()
-    await editButton.click()
+    const editLink = page.getByRole('link', { name: '编辑' }).first()
+    await editLink.click()
     await expect(page).toHaveURL(/.*goals\/.*\/edit/)
   })
 
   test('应能编辑已有目标', async ({ page }) => {
     await page.goto('/goals')
-    // 点击第一个编辑按钮
-    const editButton = page.locator('button', { hasText: '编辑' }).first()
-    await editButton.click()
+    // 点击第一个编辑链接
+    const editLink = page.getByRole('link', { name: '编辑' }).first()
+    await editLink.click()
     await expect(page).toHaveURL(/.*goals\/.*\/edit/)
 
     // 修改标题
