@@ -4,20 +4,21 @@ import { EmptyState } from '@/components/empty-state'
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
 
-type Habit = {
+type DashboardHabit = {
   id: string
   title: string
+  frequency: string
   streak: number
   completedToday: boolean
-  recentDays?: boolean[]
+  recentDays: boolean[]
 }
 
 type HabitsSectionProps = {
-  habits?: Habit[]
+  habits: DashboardHabit[]
   className?: string
 }
 
-export function HabitsSection({ habits = [], className }: HabitsSectionProps) {
+export function HabitsSection({ habits, className }: HabitsSectionProps) {
   return (
     <section className={cn('w-full', className)}>
       <div className="mb-4 flex items-center justify-between">
@@ -43,7 +44,9 @@ export function HabitsSection({ habits = [], className }: HabitsSectionProps) {
           {habits.map((habit) => (
             <HabitCard
               key={habit.id}
+              id={habit.id}
               title={habit.title}
+              frequency={habit.frequency}
               streak={habit.streak}
               completedToday={habit.completedToday}
               recentDays={habit.recentDays}

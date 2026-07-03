@@ -1,10 +1,8 @@
 import { cn } from '@/lib/utils'
 import { InsightCard } from '@/components/insight-card'
 import { EmptyState } from '@/components/empty-state'
-import { Button } from '@/components/ui/button'
-import Link from 'next/link'
 
-type Insight = {
+type DashboardInsight = {
   id: string
   message: string
   severity: 'info' | 'warning' | 'success'
@@ -12,11 +10,11 @@ type Insight = {
 }
 
 type InsightsSectionProps = {
-  insights?: Insight[]
+  insights: DashboardInsight[]
   className?: string
 }
 
-export function InsightsSection({ insights = [], className }: InsightsSectionProps) {
+export function InsightsSection({ insights, className }: InsightsSectionProps) {
   return (
     <section className={cn('w-full', className)}>
       <div className="mb-4 flex items-center justify-between">

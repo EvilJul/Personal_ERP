@@ -1,27 +1,73 @@
 'use client'
 
 import { useState } from 'react'
+import Link from 'next/link'
 import { cn } from '@/lib/utils'
 
 type HabitCardProps = {
+  /** 习惯 ID，不传则禁用打卡 API 调用（仪表盘预览模式） */
+  id?: string
   title: string
-  streak: number
+  frequency?: string
+  streak?: number
   completedToday: boolean
   recentDays?: boolean[]
-  onToggle?: (completed: boolean) => void
+  onCheckinChange?: (completed: boolean) => void
   className?: string
 }
 
-export function HabitCard({ title, streak, completedToday, recentDays = [], onToggle, className }: HabitCardProps) {
+const FREQUENCY_LABELS: Record<string, string> = {
+  daily: '每天',
+  weekly: '每周',
+}
+
+export function HabitCard({
+  id,
+  title,
+  frequency,
+  streak = 0,
+  completedToday,
+  recentDays = [],
+  onCheckinChange,
+  className,
+}: HabitCardProps) {
   const [completed, setCompleted] = useState(completedToday)
   const [animating, setAnimating] = useState(false)
+  const [submitting, setSubmitting] = useState(false)
 
-  function handleToggle() {
+  // 今日日期 YYYY-MM-DD
+  const today = new Date().toISOString().split('T')[0]
+
+  async function handleCheckin() {
+    if (submitting) return
+
     const next = !completed
-    setCompleted(next)
+    setCompleted(next)      // 乐观更新
     setAnimating(true)
-    setTimeout(() => setAnimating(false), 200)
-    onToggle?.(next)
+    setSubmitting(true)
+
+    // 无 ID 时仅做本地切换（仪表盘预览模式）
+    if (!id) {
+      onCheckinChange?.(next)
+      setTimeout(() => setAnimating(false), 200)
+      setSubmitting(false)
+      return
+    }
+
+    try {
+      const res = await fetch(`/api/habits/${id}/checkin`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ date: today }),
+      })
+      if (!res.ok) throw new Error('Failed')
+      onCheckinChange?.(next)
+    } catch {
+      setCompleted(!next)   // 回滚
+    } finally {
+      setTimeout(() => setAnimating(false), 200)
+      setSubmitting(false)
+    }
   }
 
   return (
@@ -29,37 +75,56 @@ export function HabitCard({ title, streak, completedToday, recentDays = [], onTo
       <div className="flex items-center justify-between gap-3">
         <div className="min-w-0 flex-1">
           <h4 className="text-sm font-medium text-slate-900">{title}</h4>
-          {streak > 0 && (
-            <p className="mt-0.5 text-xs text-slate-500">
-              连续 {streak} 天
-            </p>
-          )}
+          <div className="mt-0.5 flex items-center gap-2">
+            {streak > 0 && (
+              <span className="text-xs text-slate-500">
+                连续 {streak} 天
+              </span>
+            )}
+            {frequency && (
+              <span className="text-xs text-slate-400">
+                {FREQUENCY_LABELS[frequency] ?? frequency}
+              </span>
+            )}
+          </div>
         </div>
 
-        <button
-          type="button"
-          onClick={handleToggle}
-          className={cn(
-            'flex size-11 shrink-0 items-center justify-center rounded-lg border-2 transition-all duration-200',
-            completed
-              ? 'border-green-500 bg-green-500 text-white'
-              : 'border-slate-300 bg-white text-transparent hover:border-green-400',
-            animating && 'scale-110'
-          )}
-          aria-label={completed ? '取消打卡' : '打卡'}
-        >
-          <svg
-            className="size-5"
-            viewBox="0 0 20 20"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2.5"
-            strokeLinecap="round"
-            strokeLinejoin="round"
+        {/* 打卡按钮 */}
+        <div className="flex items-center gap-2">
+          <Link
+            href={`/habits/${id}/edit`}
+            className="text-xs text-slate-400 transition-colors hover:text-slate-600"
+            aria-label="编辑习惯"
           >
-            <polyline points="4 10 8 14 16 6" />
-          </svg>
-        </button>
+            编辑
+          </Link>
+          <button
+            type="button"
+            onClick={handleCheckin}
+            disabled={submitting}
+            className={cn(
+              'flex size-11 shrink-0 items-center justify-center rounded-full border-2 transition-all duration-200',
+              completed
+                ? 'border-green-500 bg-green-500 text-white'
+                : 'border-slate-300 bg-white text-transparent hover:border-green-400',
+              animating && 'scale-110',
+              submitting && 'opacity-70',
+            )}
+            aria-label={completed ? '取消打卡' : '打卡'}
+          >
+            <svg
+              className="size-5"
+              viewBox="0 0 20 20"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <polyline points="4 10 8 14 16 6" />
+            </svg>
+          </button>
+        </div>
       </div>
 
       {recentDays.length > 0 && (

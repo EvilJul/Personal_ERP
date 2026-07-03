@@ -51,7 +51,7 @@ export async function GET() {
     return NextResponse.json({ settings: sanitizeSettings(settings) })
   } catch (error) {
     return NextResponse.json(
-      { error: 'Internal server error', code: 'INTERNAL_ERROR' },
+      { error: '服务器内部错误', code: 'INTERNAL_ERROR' },
       { status: 500 }
     )
   }
@@ -87,7 +87,7 @@ export async function PUT(request: Request) {
     return NextResponse.json({ settings: sanitizeSettings(updated) })
   } catch (error) {
     return NextResponse.json(
-      { error: 'Internal server error', code: 'INTERNAL_ERROR' },
+      { error: '服务器内部错误', code: 'INTERNAL_ERROR' },
       { status: 500 }
     )
   }

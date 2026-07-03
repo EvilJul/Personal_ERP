@@ -2,10 +2,37 @@ import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { EmptyState } from '@/components/empty-state'
 import { GoalCard } from '@/components/goal-card'
+import { headers } from 'next/headers'
 
-export default function GoalsPage() {
-  // MVP: 使用静态空数据，后续接入 API
-  const goals: never[] = []
+export const dynamic = 'force-dynamic'
+
+type Goal = {
+  id: string
+  title: string
+  currentValue: number
+  targetValue: number
+  unit?: string
+  deadline?: string
+}
+
+async function getGoals(): Promise<Goal[]> {
+  try {
+    const headersList = await headers()
+    const host = headersList.get('host') ?? 'localhost:3000'
+    const protocol = headersList.get('x-forwarded-proto') ?? 'http'
+    const res = await fetch(`${protocol}://${host}/api/goals`, {
+      cache: 'no-store',
+    })
+    if (!res.ok) return []
+    const data = await res.json()
+    return data.goals ?? []
+  } catch {
+    return []
+  }
+}
+
+export default async function GoalsPage() {
+  const goals = await getGoals()
 
   return (
     <main className="min-h-screen bg-slate-50 pb-20 md:pb-8">
@@ -18,12 +45,14 @@ export default function GoalsPage() {
               设定目标，追踪进度
             </p>
           </div>
-          <Button
-            size="sm"
-            className="bg-green-500 text-white hover:bg-green-600"
-          >
-            新建目标
-          </Button>
+          <Link href="/goals/new">
+            <Button
+              size="sm"
+              className="bg-green-500 text-white hover:bg-green-600"
+            >
+              新建目标
+            </Button>
+          </Link>
         </header>
 
         {/* 返回链接 */}
@@ -43,19 +72,22 @@ export default function GoalsPage() {
             title="开始追踪你的第一个目标"
             description="设定目标、记录进度，让每一步都有方向"
             action={
-              <Button
-                size="sm"
-                className="bg-green-500 text-white hover:bg-green-600"
-              >
-                创建目标
-              </Button>
+              <Link href="/goals/new">
+                <Button
+                  size="sm"
+                  className="bg-green-500 text-white hover:bg-green-600"
+                >
+                  创建目标
+                </Button>
+              </Link>
             }
           />
         ) : (
           <div className="space-y-3">
-            {goals.map((goal: any) => (
+            {goals.map((goal) => (
               <GoalCard
                 key={goal.id}
+                id={goal.id}
                 title={goal.title}
                 currentValue={goal.currentValue}
                 targetValue={goal.targetValue}

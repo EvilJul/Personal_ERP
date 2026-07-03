@@ -8,7 +8,7 @@ export const dynamic = 'force-dynamic'
 const CreateHabitSchema = z.object({
   title: z.string().min(1).max(100),
   description: z.string().optional(),
-  frequency: z.string().optional(),
+  frequency: z.enum(['daily', 'weekly']).default('daily'),
   linkedGoalId: z.string().optional(),
 })
 
@@ -27,7 +27,7 @@ export async function GET() {
     return NextResponse.json({ habits })
   } catch (error) {
     return NextResponse.json(
-      { error: 'Internal server error', code: 'INTERNAL_ERROR' },
+      { error: '服务器内部错误', code: 'INTERNAL_ERROR' },
       { status: 500 }
     )
   }
@@ -57,7 +57,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ id: newHabit.id }, { status: 201 })
   } catch (error) {
     return NextResponse.json(
-      { error: 'Internal server error', code: 'INTERNAL_ERROR' },
+      { error: '服务器内部错误', code: 'INTERNAL_ERROR' },
       { status: 500 }
     )
   }

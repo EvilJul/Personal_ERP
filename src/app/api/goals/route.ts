@@ -29,7 +29,7 @@ export async function GET() {
     return NextResponse.json({ goals })
   } catch (error) {
     return NextResponse.json(
-      { error: 'Internal server error', code: 'INTERNAL_ERROR' },
+      { error: '服务器内部错误', code: 'INTERNAL_ERROR' },
       { status: 500 }
     )
   }
@@ -59,7 +59,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ id: newGoal.id }, { status: 201 })
   } catch (error) {
     return NextResponse.json(
-      { error: 'Internal server error', code: 'INTERNAL_ERROR' },
+      { error: '服务器内部错误', code: 'INTERNAL_ERROR' },
       { status: 500 }
     )
   }

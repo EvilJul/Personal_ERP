@@ -3,22 +3,14 @@ import { GoalCard } from '@/components/goal-card'
 import { EmptyState } from '@/components/empty-state'
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
-
-type Goal = {
-  id: string
-  title: string
-  currentValue: number
-  targetValue: number
-  unit?: string
-  deadline?: string
-}
+import type { Goal } from '@/db/queries/goals'
 
 type GoalsSectionProps = {
-  goals?: Goal[]
+  goals: Goal[]
   className?: string
 }
 
-export function GoalsSection({ goals = [], className }: GoalsSectionProps) {
+export function GoalsSection({ goals, className }: GoalsSectionProps) {
   return (
     <section className={cn('w-full', className)}>
       <div className="mb-4 flex items-center justify-between">
@@ -41,14 +33,15 @@ export function GoalsSection({ goals = [], className }: GoalsSectionProps) {
         />
       ) : (
         <div className="space-y-3">
-          {goals.map((goal) => (
+          {goals.slice(0, 3).map((goal) => (
             <GoalCard
               key={goal.id}
+              id={goal.id}
               title={goal.title}
               currentValue={goal.currentValue}
               targetValue={goal.targetValue}
-              unit={goal.unit}
-              deadline={goal.deadline}
+              unit={goal.unit ?? undefined}
+              deadline={goal.deadline ?? undefined}
             />
           ))}
         </div>
