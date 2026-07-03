@@ -1,0 +1,58 @@
+import { cn } from '@/lib/utils'
+import { GoalCard } from '@/components/goal-card'
+import { EmptyState } from '@/components/empty-state'
+import { Button } from '@/components/ui/button'
+import Link from 'next/link'
+
+type Goal = {
+  id: string
+  title: string
+  currentValue: number
+  targetValue: number
+  unit?: string
+  deadline?: string
+}
+
+type GoalsSectionProps = {
+  goals?: Goal[]
+  className?: string
+}
+
+export function GoalsSection({ goals = [], className }: GoalsSectionProps) {
+  return (
+    <section className={cn('w-full', className)}>
+      <div className="mb-4 flex items-center justify-between">
+        <h2 className="text-lg font-semibold text-slate-900">目标</h2>
+        <Button variant="ghost" size="sm" render={<Link href="/goals" />}>
+          查看全部
+        </Button>
+      </div>
+
+      {goals.length === 0 ? (
+        <EmptyState
+          icon="🎯"
+          title="开始追踪你的第一个目标"
+          description="设定目标、记录进度，让每一步都有方向"
+          action={
+            <Button size="sm" className="bg-green-500 text-white hover:bg-green-600" render={<Link href="/goals" />}>
+              创建目标
+            </Button>
+          }
+        />
+      ) : (
+        <div className="space-y-3">
+          {goals.map((goal) => (
+            <GoalCard
+              key={goal.id}
+              title={goal.title}
+              currentValue={goal.currentValue}
+              targetValue={goal.targetValue}
+              unit={goal.unit}
+              deadline={goal.deadline}
+            />
+          ))}
+        </div>
+      )}
+    </section>
+  )
+}
