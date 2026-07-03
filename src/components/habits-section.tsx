@@ -22,7 +22,7 @@ export function HabitsSection({ habits = [], className }: HabitsSectionProps) {
     <section className={cn('w-full', className)}>
       <div className="mb-4 flex items-center justify-between">
         <h2 className="text-lg font-semibold text-slate-900">习惯</h2>
-        <Button variant="ghost" size="sm" render={<Link href="/habits" />}>
+        <Button variant="ghost" size="sm" render={<Link href="/habits" />} nativeButton={false}>
           查看全部
         </Button>
       </div>
@@ -33,7 +33,7 @@ export function HabitsSection({ habits = [], className }: HabitsSectionProps) {
           title="开始养成你的第一个习惯"
           description="每日打卡，培养持久的好习惯"
           action={
-            <Button size="sm" className="bg-green-500 text-white hover:bg-green-600" render={<Link href="/habits" />}>
+            <Button size="sm" className="bg-green-500 text-white hover:bg-green-600" render={<Link href="/habits" />} nativeButton={false}>
               创建习惯
             </Button>
           }

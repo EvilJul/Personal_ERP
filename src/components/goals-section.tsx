@@ -23,7 +23,7 @@ export function GoalsSection({ goals = [], className }: GoalsSectionProps) {
     <section className={cn('w-full', className)}>
       <div className="mb-4 flex items-center justify-between">
         <h2 className="text-lg font-semibold text-slate-900">目标</h2>
-        <Button variant="ghost" size="sm" render={<Link href="/goals" />}>
+        <Button variant="ghost" size="sm" render={<Link href="/goals" />} nativeButton={false}>
           查看全部
         </Button>
       </div>
@@ -34,7 +34,7 @@ export function GoalsSection({ goals = [], className }: GoalsSectionProps) {
           title="开始追踪你的第一个目标"
           description="设定目标、记录进度，让每一步都有方向"
           action={
-            <Button size="sm" className="bg-green-500 text-white hover:bg-green-600" render={<Link href="/goals" />}>
+            <Button size="sm" className="bg-green-500 text-white hover:bg-green-600" render={<Link href="/goals" />} nativeButton={false}>
               创建目标
             </Button>
           }
