@@ -6,9 +6,19 @@ import { getAllHabits } from '@/db/queries/habits'
 import { getAllInsights } from '@/db/queries/insights'
 import { db } from '@/db'
 import { habitEntries } from '@/db/schema'
-import { eq } from 'drizzle-orm'
 
 export const dynamic = 'force-dynamic'
+
+/**
+ * 获取本地日期字符串（YYYY-MM-DD 格式）
+ * 替代 toISOString().split('T')[0]，避免 UTC 时区偏移导致日期错误
+ */
+function getLocalDate(date: Date = new Date()): string {
+  const year = date.getFullYear()
+  const month = String(date.getMonth() + 1).padStart(2, '0')
+  const day = String(date.getDate()).padStart(2, '0')
+  return `${year}-${month}-${day}`
+}
 
 /**
  * 计算目标进度变化趋势
@@ -27,7 +37,7 @@ function computeGoalTrend(_goalId: string): number {
 function computeHabitStreak(completedDates: Set<string>): number {
   let streak = 0
   const date = new Date()
-  const todayStr = date.toISOString().split('T')[0]
+  const todayStr = getLocalDate(date)
 
   // 从今天开始检查，如果今天未打卡则从昨天开始
   if (!completedDates.has(todayStr)) {
@@ -35,7 +45,7 @@ function computeHabitStreak(completedDates: Set<string>): number {
   }
 
   while (true) {
-    const dateStr = date.toISOString().split('T')[0]
+    const dateStr = getLocalDate(date)
     if (completedDates.has(dateStr)) {
       streak++
       date.setDate(date.getDate() - 1)
@@ -59,7 +69,7 @@ function computeHabitCompletionTrend(completedDates: Set<string>): number {
   for (let i = 0; i < 7; i++) {
     const d = new Date(today)
     d.setDate(d.getDate() - i)
-    if (completedDates.has(d.toISOString().split('T')[0])) {
+    if (completedDates.has(getLocalDate(d))) {
       recent7++
     }
   }
@@ -67,7 +77,7 @@ function computeHabitCompletionTrend(completedDates: Set<string>): number {
   for (let i = 7; i < 14; i++) {
     const d = new Date(today)
     d.setDate(d.getDate() - i)
-    if (completedDates.has(d.toISOString().split('T')[0])) {
+    if (completedDates.has(getLocalDate(d))) {
       prev7++
     }
   }
@@ -81,7 +91,7 @@ function computeRecentDaysFromSet(completedDates: Set<string>): boolean[] {
   for (let i = 6; i >= 0; i--) {
     const date = new Date()
     date.setDate(date.getDate() - i)
-    days.push(completedDates.has(date.toISOString().split('T')[0]))
+    days.push(completedDates.has(getLocalDate(date)))
   }
 
   return days
@@ -92,11 +102,18 @@ export default async function DashboardPage() {
   const rawHabits = getAllHabits()
   const rawInsights = getAllInsights()
 
+  // 一次性查询所有 habit entries，按 habitId 分组（修复 N+1 查询）
+  const allEntries = db.select().from(habitEntries).all()
+  const entriesByHabitId = new Map<string, typeof allEntries>()
+  for (const entry of allEntries) {
+    const list = entriesByHabitId.get(entry.habitId) || []
+    list.push(entry)
+    entriesByHabitId.set(entry.habitId, list)
+  }
+
   // 计算习惯的展示字段 + 趋势
   const habits = rawHabits.map(habit => {
-    const entries = db.select().from(habitEntries)
-      .where(eq(habitEntries.habitId, habit.id))
-      .all()
+    const entries = entriesByHabitId.get(habit.id) || []
 
     const completedDates = new Set(
       entries.filter(e => e.completed === 1).map(e => e.date)

@@ -1,5 +1,8 @@
 import { NextResponse } from 'next/server'
 import { z } from 'zod'
+import { eq, and } from 'drizzle-orm'
+import { db } from '@/db'
+import { habitEntries } from '@/db/schema'
 import { isAuthenticated } from '@/lib/auth'
 import { getHabitById, getHabitEntry, markHabitEntry } from '@/db/queries/habits'
 import { evaluateRules } from '@/engine/rules'
@@ -12,7 +15,7 @@ const CheckinSchema = z.object({
 
 type RouteParams = { params: Promise<{ id: string }> }
 
-/** POST /api/habits/[id]/checkin - 习惯打卡（幂等） */
+/** POST /api/habits/[id]/checkin - 习惯打卡 toggle（已完成则取消，未完成则打卡） */
 export async function POST(request: Request, { params }: RouteParams) {
   try {
     const authed = await isAuthenticated()
@@ -45,12 +48,17 @@ export async function POST(request: Request, { params }: RouteParams) {
 
     const { date } = parsed.data
 
-    // 幂等检查：同一天重复打卡返回已有记录，不创建新记录
+    // Toggle 逻辑：已打卡 → 删除记录（取消打卡），未打卡 → 创建记录（打卡）
     const existingEntry = getHabitEntry(id, date)
     if (existingEntry) {
-      return NextResponse.json({ entry: existingEntry })
+      // 已打卡 → 取消打卡（删除记录）
+      db.delete(habitEntries)
+        .where(eq(habitEntries.id, existingEntry.id))
+        .run()
+      return NextResponse.json({ entry: null, action: 'unchecked' })
     }
 
+    // 未打卡 → 打卡
     const entry = markHabitEntry(id, date)
 
     // 异步触发规则评估，不阻塞响应
@@ -58,7 +66,7 @@ export async function POST(request: Request, { params }: RouteParams) {
       console.error('规则评估失败:', err)
     )
 
-    return NextResponse.json({ entry }, { status: 201 })
+    return NextResponse.json({ entry, action: 'checked' }, { status: 201 })
   } catch (error) {
     return NextResponse.json(
       { error: 'Internal server error', code: 'INTERNAL_ERROR' },
