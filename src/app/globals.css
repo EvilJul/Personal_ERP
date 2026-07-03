@@ -315,3 +315,71 @@
 .glow-pulse {
   animation: pulse-glow 6s ease-in-out infinite;
 }
+
+/* ===== 背景图案系统 ===== */
+
+/* 默认无图案 - 纯色 */
+body.bg-pattern-none {
+  background-color: #f8fafc !important;
+  background-image: none !important;
+}
+
+/* 等高线 - 绿色曲线纹理 */
+body.bg-pattern-topo {
+  background-color: #f0fdf4 !important;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cpath d='M0,200 C80,160 160,240 240,180 C320,120 400,200 400,200' fill='none' stroke='%2322c55e' stroke-opacity='0.12' stroke-width='2'/%3E%3Cpath d='M0,240 C100,180 180,280 260,220 C340,160 400,240 400,240' fill='none' stroke='%2322c55e' stroke-opacity='0.10' stroke-width='1.8'/%3E%3Cpath d='M0,280 C120,220 200,320 280,260 C360,200 400,280 400,280' fill='none' stroke='%2322c55e' stroke-opacity='0.08' stroke-width='1.5'/%3E%3Cpath d='M0,120 C60,80 140,160 220,100 C300,40 400,120 400,120' fill='none' stroke='%2322c55e' stroke-opacity='0.08' stroke-width='1.5'/%3E%3Cpath d='M0,80 C80,40 160,120 240,60 C320,0 400,80 400,80' fill='none' stroke='%2322c55e' stroke-opacity='0.06' stroke-width='1.2'/%3E%3Cpath d='M0,320 C100,280 180,360 260,300 C340,240 400,320 400,320' fill='none' stroke='%2322c55e' stroke-opacity='0.06' stroke-width='1.2'/%3E%3C/svg%3E") !important;
+}
+
+/* 几何网格 - 蓝色方格 */
+body.bg-pattern-geo {
+  background-color: #eff6ff !important;
+  background-image:
+    linear-gradient(rgba(59, 130, 246, 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(59, 130, 246, 0.08) 1px, transparent 1px),
+    linear-gradient(rgba(59, 130, 246, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(59, 130, 246, 0.04) 1px, transparent 1px) !important;
+  background-size: 80px 80px, 80px 80px, 20px 20px, 20px 20px !important;
+}
+
+/* 圆点 - 紫色圆点 */
+body.bg-pattern-dots {
+  background-color: #faf5ff !important;
+  background-image: radial-gradient(circle, rgba(168, 85, 247, 0.18) 1.5px, transparent 1.5px) !important;
+  background-size: 24px 24px !important;
+}
+
+/* 波浪 - 橙色波浪线 */
+body.bg-pattern-waves {
+  background-color: #fff7ed !important;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='30'%3E%3Cpath d='M0,15 C25,5 50,25 75,15 C100,5 125,25 150,15 C175,5 200,25 200,15' fill='none' stroke='%23f97316' stroke-opacity='0.15' stroke-width='2'/%3E%3Cpath d='M0,25 C25,15 50,35 75,25 C100,15 125,35 150,25 C175,15 200,35 200,25' fill='none' stroke='%23f97316' stroke-opacity='0.10' stroke-width='1.5'/%3E%3C/svg%3E") !important;
+}
+
+/* 十字 - 红色十字 */
+body.bg-pattern-plus {
+  background-color: #fef2f2 !important;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24'%3E%3Cline x1='12' y1='4' x2='12' y2='20' stroke='%23ef4444' stroke-opacity='0.12' stroke-width='1.5' stroke-linecap='round'/%3E%3Cline x1='4' y1='12' x2='20' y2='12' stroke='%23ef4444' stroke-opacity='0.12' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E") !important;
+}
+
+/* 锯齿 - 青色锯齿线 */
+body.bg-pattern-zigzag {
+  background-color: #ecfeff !important;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='20'%3E%3Cpolyline points='0,10 10,0 20,10 30,0 40,10' fill='none' stroke='%2306b6d4' stroke-opacity='0.15' stroke-width='1.5'/%3E%3C/svg%3E") !important;
+}
+
+/* 圆环 - 紫色同心圆 */
+body.bg-pattern-circles {
+  background-color: #faf5ff !important;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60'%3E%3Ccircle cx='30' cy='30' r='20' fill='none' stroke='%238b5cf6' stroke-opacity='0.10' stroke-width='1.5'/%3E%3Ccircle cx='30' cy='30' r='12' fill='none' stroke='%238b5cf6' stroke-opacity='0.07' stroke-width='1.2'/%3E%3Ccircle cx='30' cy='30' r='5' fill='none' stroke='%238b5cf6' stroke-opacity='0.05' stroke-width='1'/%3E%3C/svg%3E") !important;
+}
+
+/* 斜线 - 灰色斜线纹理 */
+body.bg-pattern-diagonal {
+  background-color: #f8fafc !important;
+  background-image: repeating-linear-gradient(
+    45deg,
+    transparent,
+    transparent 10px,
+    rgba(148, 163, 184, 0.08) 10px,
+    rgba(148, 163, 184, 0.08) 11px
+  ) !important;
+}

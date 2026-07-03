@@ -2,6 +2,7 @@ import { InsightsSection } from '@/components/insights-section'
 import { GoalsSection } from '@/components/goals-section'
 import { HabitsSection } from '@/components/habits-section'
 import { StatsBar } from '@/components/stats-bar'
+import { BackgroundApplier } from '@/components/background-applier'
 import { getAllGoals } from '@/db/queries/goals'
 import { getAllHabits } from '@/db/queries/habits'
 import { getAllInsights } from '@/db/queries/insights'
@@ -179,6 +180,8 @@ export default async function DashboardPage() {
 
   return (
     <main className="min-h-screen pb-20 md:pb-4 animate-fade-in-up bg-gradient-to-br from-slate-50 via-white to-slate-50">
+      {/* 背景图案客户端同步 */}
+      <BackgroundApplier />
       {/* 背景装饰层 - 抽象几何 SVG */}
       <div className="pointer-events-none fixed inset-0 overflow-hidden" aria-hidden="true">
         {/* 左上角 - 三角形网格 */}

@@ -12,12 +12,28 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
+import {
+  applyBackgroundPattern,
+  getSavedBackgroundPattern,
+} from '@/components/background-applier'
 
 type Settings = {
   actualServerUrl: string | null
   actualPassword: string | null
   actualBudgetId: string | null
 }
+
+const backgroundOptions = [
+  { id: 'none', name: '默认', preview: '纯色背景', color: '#f8fafc' },
+  { id: 'topo', name: '等高线', preview: '绿色曲线纹理', color: '#f0fdf4' },
+  { id: 'geo', name: '几何网格', preview: '蓝色方格图案', color: '#eff6ff' },
+  { id: 'dots', name: '圆点', preview: '紫色圆点', color: '#faf5ff' },
+  { id: 'waves', name: '波浪', preview: '橙色波浪线', color: '#fff7ed' },
+  { id: 'plus', name: '十字', preview: '红色十字', color: '#fef2f2' },
+  { id: 'zigzag', name: '锯齿', preview: '青色锯齿线', color: '#ecfeff' },
+  { id: 'circles', name: '圆环', preview: '紫色同心圆', color: '#faf5ff' },
+  { id: 'diagonal', name: '斜线', preview: '灰色斜线纹理', color: '#f8fafc' },
+]
 
 export default function SettingsPage() {
   const router = useRouter()
@@ -30,6 +46,7 @@ export default function SettingsPage() {
   const [password, setPassword] = useState('')
   const [passwordChanged, setPasswordChanged] = useState(false)
   const [budgetId, setBudgetId] = useState('')
+  const [bgPattern, setBgPattern] = useState('none')
 
   useEffect(() => {
     async function fetchSettings() {
@@ -52,6 +69,16 @@ export default function SettingsPage() {
     }
     fetchSettings()
   }, [])
+
+  // 读取保存的背景图案偏好
+  useEffect(() => {
+    setBgPattern(getSavedBackgroundPattern())
+  }, [])
+
+  function handleBackgroundChange(pattern: string) {
+    setBgPattern(pattern)
+    applyBackgroundPattern(pattern)
+  }
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
@@ -218,6 +245,52 @@ export default function SettingsPage() {
             </form>
           </CardContent>
         </Card>
+
+        {/* 背景图案选择卡片 */}
+        <div className="mt-6">
+          <Card>
+            <CardHeader>
+              <CardTitle>背景图案</CardTitle>
+              <CardDescription>
+                选择 Dashboard 背景装饰图案
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-3 gap-3">
+                {backgroundOptions.map(opt => (
+                  <button
+                    key={opt.id}
+                    type="button"
+                    onClick={() => handleBackgroundChange(opt.id)}
+                    className={`relative rounded-lg border-2 p-3 transition-all text-left ${
+                      bgPattern === opt.id
+                        ? 'border-green-500 bg-green-50 shadow-sm'
+                        : 'border-slate-200 hover:border-slate-300 hover:shadow-sm'
+                    }`}
+                  >
+                    <div
+                      className={`h-16 rounded mb-2 bg-pattern-${opt.id}`}
+                      style={{ backgroundColor: opt.color }}
+                    />
+                    <div className="text-sm font-medium text-slate-800">
+                      {opt.name}
+                    </div>
+                    <div className="text-xs text-slate-500">
+                      {opt.preview}
+                    </div>
+                    {bgPattern === opt.id && (
+                      <div className="absolute top-1.5 right-1.5 h-5 w-5 rounded-full bg-green-500 flex items-center justify-center">
+                        <svg className="h-3 w-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                        </svg>
+                      </div>
+                    )}
+                  </button>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+        </div>
       </div>
     </main>
   )
