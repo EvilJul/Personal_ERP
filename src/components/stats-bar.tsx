@@ -1,7 +1,8 @@
+import Link from 'next/link'
+
 type StatCardProps = {
   label: string
   value: string
-  change?: string
   tint: 'green' | 'blue' | 'orange' | 'purple'
 }
 
@@ -12,18 +13,19 @@ const tintStyles: Record<StatCardProps['tint'], string> = {
   purple: 'bg-purple-50/60 hover:bg-purple-50',
 }
 
-function StatCard({ label, value, change, tint }: StatCardProps) {
+function StatCard({ label, value, tint }: StatCardProps) {
   return (
-    <div className={`stagger-item card-hover rounded-xl border border-slate-200/80 p-4 shadow-[0_1px_3px_rgba(0,0,0,0.04)] ${tintStyles[tint]}`}>
-      <p className="text-xs font-medium text-slate-500">{label}</p>
-      <p className="mt-1 text-2xl font-bold text-slate-900">{value}</p>
-      {change && (
-        <span className="mt-1 inline-block rounded-full bg-green-50 px-2 py-0.5 text-xs font-medium text-green-600">
-          {change}
-        </span>
-      )}
+    <div className={`stagger-item card-hover flex flex-col items-center justify-center rounded-xl border border-slate-200/80 px-3 py-2 shadow-[0_1px_3px_rgba(0,0,0,0.04)] ${tintStyles[tint]}`}>
+      <p className="text-base font-bold text-slate-900 leading-tight">{value}</p>
+      <p className="mt-0.5 text-[10px] font-medium text-slate-500 leading-tight">{label}</p>
     </div>
   )
+}
+
+type BadgePreview = {
+  id: string
+  icon: string
+  name: string
 }
 
 type StatsBarProps = {
@@ -31,15 +33,36 @@ type StatsBarProps = {
   checkinRate: number
   streakDays: number
   insightCount: number
+  unlockedBadges: BadgePreview[]
 }
 
-export function StatsBar({ goalProgress, checkinRate, streakDays, insightCount }: StatsBarProps) {
+export function StatsBar({ goalProgress, checkinRate, streakDays, insightCount, unlockedBadges }: StatsBarProps) {
   return (
-    <div className="mb-8 grid grid-cols-2 gap-4 md:grid-cols-4">
-      <StatCard label="目标进度" value={`${goalProgress}%`} change="+12%" tint="green" />
-      <StatCard label="打卡率" value={`${checkinRate}%`} change="+5%" tint="blue" />
-      <StatCard label="连续天数" value={streakDays.toString()} change="最佳记录" tint="orange" />
-      <StatCard label="洞察" value={insightCount.toString()} change="1 条新" tint="purple" />
+    <div className="mb-4 flex items-center gap-3">
+      {/* 5 个统计卡片，等分宽度 */}
+      <div className="grid flex-1 grid-cols-5 gap-3">
+        <StatCard label="目标进度" value={`${goalProgress}%`} tint="green" />
+        <StatCard label="打卡率" value={`${checkinRate}%`} tint="blue" />
+        <StatCard label="连续天数" value={streakDays.toString()} tint="orange" />
+        <StatCard label="洞察" value={insightCount.toString()} tint="purple" />
+        <StatCard label="成就" value={unlockedBadges.length.toString()} tint="green" />
+      </div>
+
+      {/* 最近解锁徽章小图标 */}
+      {unlockedBadges.length > 0 && (
+        <Link
+          href="/badges"
+          className="flex shrink-0 items-center gap-1.5 rounded-xl border border-slate-200/80 bg-white/60 px-3 py-2 shadow-[0_1px_3px_rgba(0,0,0,0.04)] transition-colors hover:bg-slate-50"
+          title="查看全部成就"
+        >
+          {unlockedBadges.map(badge => (
+            <span key={badge.id} className="text-base" title={badge.name}>
+              {badge.icon}
+            </span>
+          ))}
+          <span className="ml-1 text-xs text-slate-400">&rarr;</span>
+        </Link>
+      )}
     </div>
   )
 }

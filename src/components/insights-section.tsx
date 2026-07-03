@@ -17,8 +17,8 @@ type InsightsSectionProps = {
 export function InsightsSection({ insights, className }: InsightsSectionProps) {
   return (
     <section className={cn('w-full animate-fade-in-up', className)}>
-      <div className="mb-4 flex items-center justify-between">
-        <h2 className="text-lg font-semibold text-slate-900">洞察</h2>
+      <div className="mb-3 flex items-center justify-between">
+        <h2 className="text-base font-semibold text-slate-900">洞察</h2>
       </div>
 
       {insights.length === 0 ? (

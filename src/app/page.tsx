@@ -1,7 +1,6 @@
 import { InsightsSection } from '@/components/insights-section'
 import { GoalsSection } from '@/components/goals-section'
 import { HabitsSection } from '@/components/habits-section'
-import { BadgesSection } from '@/components/badges-section'
 import { StatsBar } from '@/components/stats-bar'
 import { getAllGoals } from '@/db/queries/goals'
 import { getAllHabits } from '@/db/queries/habits'
@@ -166,41 +165,38 @@ export default async function DashboardPage() {
     ? Math.round(goals.reduce((sum, g) => sum + (g.targetValue > 0 ? Math.min((g.currentValue / g.targetValue) * 100, 100) : 0), 0) / goals.length)
     : 0
 
-  const todayStr = getLocalDate()
   const totalHabits = habits.length
   const completedTodayCount = habits.filter(h => h.completedToday).length
   const checkinRate = totalHabits > 0 ? Math.round((completedTodayCount / totalHabits) * 100) : 0
 
   const maxStreak = habits.reduce((max, h) => Math.max(max, h.streak), 0)
 
+  // 最近解锁的 3 个徽章（用于统计栏）
+  const unlockedBadges = allBadges
+    .filter(b => b.unlocked)
+    .slice(0, 3)
+    .map(b => ({ id: b.id, icon: b.icon, name: b.name }))
+
   return (
-    <main className="min-h-screen pb-20 md:pb-8 animate-fade-in-up" style={{ background: 'linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%)' }}>
-      <div className="mx-auto max-w-6xl px-4 py-6 md:px-6 md:py-8">
-        {/* 统计卡片栏 */}
+    <main className="min-h-screen pb-20 md:pb-4 animate-fade-in-up" style={{ background: 'linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%)' }}>
+      <div className="mx-auto max-w-6xl px-4 py-4 md:px-6 md:py-6">
+        {/* 统计卡片栏 + 成就图标 */}
         <StatsBar
           goalProgress={avgGoalProgress}
           checkinRate={checkinRate}
           streakDays={maxStreak}
           insightCount={insights.length}
+          unlockedBadges={unlockedBadges}
         />
 
-        <hr className="divider-gradient mb-6 md:mb-8" />
+        {/* 洞察区域 */}
+        <InsightsSection insights={insights} className="mb-4" />
 
-        {/* Insights - 2列网格 */}
-        <InsightsSection insights={insights} className="mb-8" />
-
-        <hr className="divider-gradient mb-6 md:mb-8" />
-
-        {/* Goals + Habits 双栏（5:3 比例） */}
-        <div className="grid grid-cols-1 gap-6 md:gap-8 lg:grid-cols-[5fr_3fr]">
+        {/* Goals + Habits 双栏（60:40 比例） */}
+        <div className="grid grid-cols-1 gap-4 lg:grid-cols-[3fr_2fr]">
           <GoalsSection goals={goalsWithTrend} total={goals.length} />
           <HabitsSection habits={habits} total={rawHabits.length} />
         </div>
-
-        <hr className="divider-gradient my-6 md:my-8" />
-
-        {/* Badges 徽章区域 */}
-        <BadgesSection badges={allBadges} />
       </div>
     </main>
   )
