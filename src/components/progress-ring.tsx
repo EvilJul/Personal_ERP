@@ -6,10 +6,11 @@ type ProgressRingProps = {
   percentage: number
   size?: number
   strokeWidth?: number
+  stripeAnimate?: boolean
   className?: string
 }
 
-export function ProgressRing({ percentage, size = 48, strokeWidth = 4, className }: ProgressRingProps) {
+export function ProgressRing({ percentage, size = 48, strokeWidth = 4, stripeAnimate, className }: ProgressRingProps) {
   const [animatedPercent, setAnimatedPercent] = useState(0)
   const radius = (size - strokeWidth) / 2
   const circumference = radius * 2 * Math.PI
@@ -27,6 +28,13 @@ export function ProgressRing({ percentage, size = 48, strokeWidth = 4, className
   return (
     <div className={className} style={{ width: size, height: size }}>
       <svg viewBox={`0 0 ${size} ${size}`} className="-rotate-90">
+        {stripeAnimate && (
+          <defs>
+            <pattern id="stripe-pattern" patternUnits="userSpaceOnUse" width="6" height="6" patternTransform="rotate(45)">
+              <line x1="0" y1="0" x2="0" y2="6" stroke="rgba(255,255,255,0.25)" strokeWidth="2" />
+            </pattern>
+          </defs>
+        )}
         <circle
           cx={size / 2}
           cy={size / 2}
@@ -47,6 +55,20 @@ export function ProgressRing({ percentage, size = 48, strokeWidth = 4, className
           strokeLinecap="round"
           className="transition-all duration-600 ease-out"
         />
+        {stripeAnimate && (
+          <circle
+            cx={size / 2}
+            cy={size / 2}
+            r={radius}
+            fill="none"
+            stroke="url(#stripe-pattern)"
+            strokeWidth={strokeWidth}
+            strokeDasharray={circumference}
+            strokeDashoffset={offset}
+            strokeLinecap="round"
+            className="transition-all duration-600 ease-out animate-stripe-move"
+          />
+        )}
       </svg>
       <span className="absolute inset-0 flex items-center justify-center text-xs font-bold text-slate-900">
         {percentage}%

@@ -68,7 +68,7 @@ export function GoalCard({ id, title, currentValue, targetValue, unit, deadline,
       </div>
 
       <div className="mt-3 flex items-center gap-4">
-        <ProgressRing percentage={progress} size={56} strokeWidth={5} className="relative shrink-0" />
+        <ProgressRing percentage={progress} size={56} strokeWidth={5} className="relative shrink-0" stripeAnimate={progress > 0} />
         <div className="min-w-0 flex-1">
           <p className="text-xs text-slate-500">
             {currentValue}{unit ? ` ${unit}` : ''} / {targetValue}{unit ? ` ${unit}` : ''}

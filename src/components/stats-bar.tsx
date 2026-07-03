@@ -15,7 +15,7 @@ const tintStyles: Record<StatCardProps['tint'], string> = {
 
 function StatCard({ label, value, tint }: StatCardProps) {
   return (
-    <div className={`stagger-item card-hover flex flex-col items-center justify-center rounded-xl border border-slate-200/80 px-3 py-2 shadow-[0_1px_3px_rgba(0,0,0,0.04)] ${tintStyles[tint]}`}>
+    <div className={`stagger-item card-hover flex flex-col items-center justify-center rounded-xl border border-slate-200/80 px-3 py-2 shadow-[0_1px_3px_rgba(0,0,0,0.04)] bg-[image:repeating-linear-gradient(45deg,transparent,transparent_10px,rgba(0,0,0,0.02)_10px,rgba(0,0,0,0.02)_11px)] ${tintStyles[tint]}`}>
       <p className="text-base font-bold text-slate-900 leading-tight">{value}</p>
       <p className="mt-0.5 text-[10px] font-medium text-slate-500 leading-tight">{label}</p>
     </div>

@@ -223,6 +223,31 @@
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
 }
 
+/* 卡片阴影层次 - 多层投影营造深度感 */
+.card-elevated {
+  box-shadow:
+    0 1px 2px rgba(0,0,0,0.04),
+    0 4px 8px rgba(0,0,0,0.04),
+    0 8px 16px rgba(0,0,0,0.02);
+}
+
+.card-elevated:hover {
+  box-shadow:
+    0 2px 4px rgba(0,0,0,0.06),
+    0 8px 16px rgba(0,0,0,0.06),
+    0 16px 32px rgba(0,0,0,0.04);
+}
+
+/* 条纹动画 - 用于进度条装饰 */
+@keyframes stripeMove {
+  from { stroke-dashoffset: 0; }
+  to { stroke-dashoffset: 12; }
+}
+
+.animate-stripe-move {
+  animation: stripeMove 0.6s linear infinite;
+}
+
 /* 链接下划线滑入效果 */
 .link-underline {
   position: relative;
