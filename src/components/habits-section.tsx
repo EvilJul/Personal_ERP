@@ -35,7 +35,7 @@ export function HabitsSection({ habits, className }: HabitsSectionProps) {
           title="开始养成你的第一个习惯"
           description="每日打卡，培养持久的好习惯"
           action={
-            <Button size="sm" className="bg-green-500 text-white hover:bg-green-600" render={<Link href="/habits" />} nativeButton={false}>
+            <Button size="sm" className="rounded-lg bg-slate-900 text-white hover:bg-slate-700" render={<Link href="/habits" />} nativeButton={false}>
               创建习惯
             </Button>
           }

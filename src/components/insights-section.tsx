@@ -28,7 +28,7 @@ export function InsightsSection({ insights, className }: InsightsSectionProps) {
           description="先添加目标和习惯，系统会为你生成跨模块的洞察分析"
         />
       ) : (
-        <div className="space-y-3">
+        <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
           {insights.map((insight, index) => (
             <InsightCard
               key={insight.id}

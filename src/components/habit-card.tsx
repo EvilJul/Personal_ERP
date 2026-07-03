@@ -73,7 +73,7 @@ export function HabitCard({
   }
 
   return (
-    <div className={cn('rounded-lg border border-slate-200 bg-white p-4', className)}>
+    <div className={cn('rounded-xl border border-slate-200 bg-white p-4 shadow-[0_1px_3px_rgba(0,0,0,0.04)]', className)}>
       <div className="flex items-center justify-between gap-3">
         <div className="min-w-0 flex-1">
           <h4 className="text-sm font-medium text-slate-900">{title}</h4>
@@ -86,8 +86,10 @@ export function HabitCard({
             {completionTrend !== undefined && completionTrend !== 0 && (
               <span
                 className={cn(
-                  'text-xs font-medium',
-                  completionTrend > 0 ? 'text-green-500' : 'text-red-500',
+                  'inline-block rounded-full px-2 py-0.5 text-xs font-medium',
+                  completionTrend > 0
+                    ? 'bg-green-50 text-green-600'
+                    : 'bg-red-50 text-red-500',
                 )}
               >
                 {completionTrend > 0 ? '↑' : '↓'} {Math.abs(completionTrend)}%
@@ -115,17 +117,17 @@ export function HabitCard({
             onClick={handleCheckin}
             disabled={submitting}
             className={cn(
-              'flex size-11 shrink-0 items-center justify-center rounded-full border-2 transition-all duration-200',
+              'flex size-9 shrink-0 items-center justify-center rounded-full transition-all duration-200',
               completed
-                ? 'border-green-500 bg-green-500 text-white'
-                : 'border-slate-300 bg-white text-transparent hover:border-green-400',
+                ? 'bg-slate-900 text-white'
+                : 'bg-slate-100 text-slate-400 hover:bg-slate-200',
               animating && 'scale-110',
               submitting && 'opacity-70',
             )}
             aria-label={completed ? '取消打卡' : '打卡'}
           >
             <svg
-              className="size-5"
+              className="size-4"
               viewBox="0 0 20 20"
               fill="none"
               stroke="currentColor"

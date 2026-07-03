@@ -1,6 +1,7 @@
 import { InsightsSection } from '@/components/insights-section'
 import { GoalsSection } from '@/components/goals-section'
 import { HabitsSection } from '@/components/habits-section'
+import { StatsBar } from '@/components/stats-bar'
 import { getAllGoals } from '@/db/queries/goals'
 import { getAllHabits } from '@/db/queries/habits'
 import { getAllInsights } from '@/db/queries/insights'
@@ -148,6 +149,18 @@ export default async function DashboardPage() {
     source: insight.ruleId ? '规则引擎' : undefined,
   }))
 
+  // 计算统计指标
+  const avgGoalProgress = goals.length > 0
+    ? Math.round(goals.reduce((sum, g) => sum + (g.targetValue > 0 ? Math.min((g.currentValue / g.targetValue) * 100, 100) : 0), 0) / goals.length)
+    : 0
+
+  const todayStr = getLocalDate()
+  const totalHabits = habits.length
+  const completedTodayCount = habits.filter(h => h.completedToday).length
+  const checkinRate = totalHabits > 0 ? Math.round((completedTodayCount / totalHabits) * 100) : 0
+
+  const maxStreak = habits.reduce((max, h) => Math.max(max, h.streak), 0)
+
   return (
     <main className="min-h-screen bg-slate-50 pb-20 md:pb-8">
       <div className="mx-auto max-w-6xl px-4 py-6 md:px-6 md:py-8">
@@ -161,11 +174,19 @@ export default async function DashboardPage() {
           </p>
         </header>
 
-        {/* Insights - 全宽 */}
-        <InsightsSection insights={insights} className="mb-6 md:mb-8" />
+        {/* 统计卡片栏 */}
+        <StatsBar
+          goalProgress={avgGoalProgress}
+          checkinRate={checkinRate}
+          streakDays={maxStreak}
+          insightCount={insights.length}
+        />
 
-        {/* Goals + Habits 双栏（Desktop）/ 单栏（Tablet & Mobile） */}
-        <div className="grid grid-cols-1 gap-6 md:gap-8 lg:grid-cols-[3fr_2fr]">
+        {/* Insights - 2列网格 */}
+        <InsightsSection insights={insights} className="mb-8" />
+
+        {/* Goals + Habits 双栏（5:3 比例） */}
+        <div className="grid grid-cols-1 gap-6 md:gap-8 lg:grid-cols-[5fr_3fr]">
           <GoalsSection goals={goalsWithTrend} />
           <HabitsSection habits={habits} />
         </div>

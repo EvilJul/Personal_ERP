@@ -30,7 +30,7 @@ export function GoalsSection({ goals, className }: GoalsSectionProps) {
           title="开始追踪你的第一个目标"
           description="设定目标、记录进度，让每一步都有方向"
           action={
-            <Button size="sm" className="bg-green-500 text-white hover:bg-green-600" render={<Link href="/goals" />} nativeButton={false}>
+            <Button size="sm" className="rounded-lg bg-slate-900 text-white hover:bg-slate-700" render={<Link href="/goals" />} nativeButton={false}>
               创建目标
             </Button>
           }

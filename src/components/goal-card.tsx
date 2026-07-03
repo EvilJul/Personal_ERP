@@ -5,8 +5,7 @@ import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { cn } from '@/lib/utils'
 import { Badge } from '@/components/ui/badge'
-import { Button } from '@/components/ui/button'
-import { Progress, ProgressLabel, ProgressValue } from '@/components/ui/progress'
+import { ProgressRing } from '@/components/progress-ring'
 
 type GoalCardProps = {
   id: string
@@ -58,7 +57,7 @@ export function GoalCard({ id, title, currentValue, targetValue, unit, deadline,
   }
 
   return (
-    <div className={cn('rounded-lg border border-slate-200 bg-white p-4', className)}>
+    <div className={cn('rounded-xl border border-slate-200 bg-white p-4 shadow-[0_1px_3px_rgba(0,0,0,0.04)]', className)}>
       <div className="flex items-start justify-between gap-2">
         <h4 className="text-sm font-medium text-slate-900">{title}</h4>
         {deadline && (
@@ -68,40 +67,43 @@ export function GoalCard({ id, title, currentValue, targetValue, unit, deadline,
         )}
       </div>
 
-      <div className="mt-3">
-        <Progress value={progress}>
-          <ProgressLabel className="text-xs text-slate-500">
+      <div className="mt-3 flex items-center gap-4">
+        <ProgressRing percentage={progress} size={56} strokeWidth={5} className="relative shrink-0" />
+        <div className="min-w-0 flex-1">
+          <p className="text-xs text-slate-500">
             {currentValue}{unit ? ` ${unit}` : ''} / {targetValue}{unit ? ` ${unit}` : ''}
-          </ProgressLabel>
-          <ProgressValue className="text-xs font-medium text-slate-700" />
-        </Progress>
-        {trend !== undefined && trend !== 0 && (
-          <span
-            className={cn(
-              'mt-1 inline-block text-xs font-medium',
-              trend > 0 ? 'text-green-500' : 'text-red-500',
-            )}
-          >
-            {trend > 0 ? '↑' : '↓'} {Math.abs(trend)}%
-          </span>
-        )}
+          </p>
+          {trend !== undefined && trend !== 0 && (
+            <span
+              className={cn(
+                'mt-1 inline-block rounded-full px-2 py-0.5 text-xs font-medium',
+                trend > 0
+                  ? 'bg-green-50 text-green-600'
+                  : 'bg-red-50 text-red-500',
+              )}
+            >
+              {trend > 0 ? '↑' : '↓'} {Math.abs(trend)}%
+            </span>
+          )}
+        </div>
       </div>
 
       {/* 操作按钮 */}
       <div className="mt-3 flex gap-2">
-        <Link href={`/goals/${id}/edit`}>
-          <Button variant="outline" size="sm">
-            编辑
-          </Button>
+        <Link
+          href={`/goals/${id}/edit`}
+          className="inline-flex h-8 items-center rounded-lg bg-slate-900 px-3 text-xs font-medium text-white transition-colors hover:bg-slate-700"
+        >
+          编辑
         </Link>
-        <Button
-          variant="destructive"
-          size="sm"
+        <button
+          type="button"
           onClick={handleDelete}
           disabled={deleting}
+          className="inline-flex h-8 items-center rounded-lg border border-slate-200 bg-white px-3 text-xs font-medium text-slate-500 transition-colors hover:bg-slate-50 hover:text-slate-700 disabled:opacity-50"
         >
           {deleting ? '删除中...' : '删除'}
-        </Button>
+        </button>
       </div>
     </div>
   )
