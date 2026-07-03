@@ -179,55 +179,80 @@ export default async function DashboardPage() {
 
   return (
     <main className="min-h-screen pb-20 md:pb-4 animate-fade-in-up bg-gradient-to-br from-slate-50 via-white to-slate-50">
-      {/* 漂浮像素装饰层 */}
+      {/* 背景装饰层 - 抽象几何 SVG */}
       <div className="pointer-events-none fixed inset-0 overflow-hidden" aria-hidden="true">
-        {/* 左上角 - 绿色靶心 */}
-        <div className="absolute -top-20 -left-20 opacity-10 float-slow">
-          <svg width="120" height="120" viewBox="0 0 16 16">
-            <rect x="4" y="4" width="8" height="8" fill="#22c55e" />
-            <rect x="5" y="5" width="6" height="6" fill="white" />
-            <rect x="6" y="6" width="4" height="4" fill="#22c55e" />
+        {/* 左上角 - 三角形网格 */}
+        <div className="absolute -top-10 -left-20 float-medium">
+          <svg width="200" height="200" viewBox="0 0 200 200" fill="none">
+            <defs>
+              <linearGradient id="grad4" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stopColor="#06b6d4" stopOpacity="0.2" />
+                <stop offset="100%" stopColor="#22c55e" stopOpacity="0.1" />
+              </linearGradient>
+            </defs>
+            <polygon points="10,10 50,10 30,40" stroke="url(#grad4)" strokeWidth="1.5" />
+            <polygon points="60,30 100,30 80,60" stroke="url(#grad4)" strokeWidth="1.5" opacity="0.7" />
+            <polygon points="30,70 70,70 50,100" stroke="url(#grad4)" strokeWidth="1.5" opacity="0.5" />
+            <polygon points="100,60 140,60 120,90" stroke="url(#grad4)" strokeWidth="1.5" opacity="0.4" />
+            <polygon points="70,120 110,120 90,150" stroke="url(#grad4)" strokeWidth="1.5" opacity="0.3" />
           </svg>
         </div>
 
-        {/* 右上角 - 蓝色勾选 */}
-        <div className="absolute -top-10 -right-10 opacity-10 float-medium">
-          <svg width="100" height="100" viewBox="0 0 16 16">
-            <rect x="2" y="2" width="12" height="12" rx="2" stroke="#3b82f6" strokeWidth="2" fill="none" />
-            <rect x="4" y="7" width="2" height="4" fill="#3b82f6" />
-            <rect x="6" y="9" width="2" height="2" fill="#3b82f6" />
-            <rect x="8" y="7" width="2" height="2" fill="#3b82f6" />
-            <rect x="10" y="5" width="2" height="2" fill="#3b82f6" />
+        {/* 右上角 - 渐变圆环 */}
+        <div className="absolute -top-20 -right-20 float-slow">
+          <svg width="300" height="300" viewBox="0 0 300 300" fill="none">
+            <defs>
+              <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stopColor="#22c55e" stopOpacity="0.3" />
+                <stop offset="100%" stopColor="#3b82f6" stopOpacity="0.1" />
+              </linearGradient>
+            </defs>
+            <circle cx="150" cy="150" r="100" stroke="url(#grad1)" strokeWidth="20" opacity="0.15" />
+            <circle cx="150" cy="150" r="70" stroke="url(#grad1)" strokeWidth="15" opacity="0.1" />
+            <circle cx="150" cy="150" r="40" stroke="url(#grad1)" strokeWidth="10" opacity="0.08" />
           </svg>
         </div>
 
-        {/* 左下角 - 橙色火焰 */}
-        <div className="absolute -bottom-20 -left-10 opacity-10 float-slow-alt">
-          <svg width="80" height="80" viewBox="0 0 16 16">
-            <rect x="6" y="2" width="4" height="2" fill="#ff9800" />
-            <rect x="4" y="4" width="8" height="2" fill="#ff9800" />
-            <rect x="4" y="6" width="8" height="2" fill="#ff5722" />
-            <rect x="6" y="8" width="4" height="2" fill="#ff5722" />
-            <rect x="6" y="10" width="4" height="4" fill="#e65100" />
+        {/* 左下角 - 波浪线条 */}
+        <div className="absolute -bottom-10 -left-10 float-medium">
+          <svg width="400" height="200" viewBox="0 0 400 200" fill="none">
+            <defs>
+              <linearGradient id="grad2" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stopColor="#f97316" stopOpacity="0.2" />
+                <stop offset="50%" stopColor="#ec4899" stopOpacity="0.15" />
+                <stop offset="100%" stopColor="#8b5cf6" stopOpacity="0.1" />
+              </linearGradient>
+            </defs>
+            <path d="M0,100 C100,50 200,150 300,100 C350,75 400,100 400,100" stroke="url(#grad2)" strokeWidth="3" />
+            <path d="M0,120 C100,70 200,170 300,120 C350,95 400,120 400,120" stroke="url(#grad2)" strokeWidth="2" opacity="0.7" />
+            <path d="M0,140 C100,90 200,190 300,140 C350,115 400,140 400,140" stroke="url(#grad2)" strokeWidth="1.5" opacity="0.5" />
           </svg>
         </div>
 
-        {/* 右下角 - 紫色灯泡 */}
-        <div className="absolute -bottom-10 -right-20 opacity-10 float-medium">
-          <svg width="90" height="90" viewBox="0 0 16 16">
-            <rect x="6" y="2" width="4" height="2" fill="#9c27b0" />
-            <rect x="4" y="4" width="8" height="2" fill="#9c27b0" />
-            <rect x="4" y="6" width="8" height="2" fill="#9c27b0" />
-            <rect x="6" y="8" width="4" height="2" fill="white" />
-            <rect x="6" y="10" width="4" height="2" fill="#757575" />
-            <rect x="4" y="12" width="8" height="2" fill="#757575" />
+        {/* 右下角 - 散点图案 */}
+        <div className="absolute -bottom-20 -right-10 float-slow-alt">
+          <svg width="250" height="250" viewBox="0 0 250 250" fill="none">
+            <defs>
+              <radialGradient id="grad3" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stopColor="#8b5cf6" stopOpacity="0.25" />
+                <stop offset="100%" stopColor="#8b5cf6" stopOpacity="0" />
+              </radialGradient>
+            </defs>
+            <circle cx="50" cy="50" r="8" fill="url(#grad3)" />
+            <circle cx="120" cy="30" r="5" fill="url(#grad3)" />
+            <circle cx="180" cy="60" r="10" fill="url(#grad3)" />
+            <circle cx="80" cy="120" r="6" fill="url(#grad3)" />
+            <circle cx="200" cy="100" r="4" fill="url(#grad3)" />
+            <circle cx="40" cy="180" r="7" fill="url(#grad3)" />
+            <circle cx="150" cy="150" r="9" fill="url(#grad3)" />
+            <circle cx="220" cy="200" r="5" fill="url(#grad3)" />
           </svg>
         </div>
 
         {/* 顶部中央 - 渐变光晕 */}
         <div className="absolute -top-32 left-1/2 -translate-x-1/2 w-[28rem] h-[28rem] rounded-full glow-pulse"
           style={{
-            background: 'radial-gradient(circle, rgba(34,197,94,0.12) 0%, rgba(34,197,94,0.04) 40%, transparent 70%)',
+            background: 'radial-gradient(circle, rgba(34,197,94,0.15) 0%, transparent 70%)',
           }}
         />
       </div>
