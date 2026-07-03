@@ -14,6 +14,17 @@ const UpdateSettingsSchema = z.object({
 })
 
 /**
+ * 脱敏：将 actualPassword 替换为掩码，防止明文泄露给客户端
+ */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function sanitizeSettings(settings: Record<string, any>) {
+  return {
+    ...settings,
+    actualPassword: settings.actualPassword ? '••••••••' : null,
+  }
+}
+
+/**
  * 获取或创建唯一的用户设置记录
  * 单用户应用，始终使用同一行记录
  */
@@ -37,7 +48,7 @@ export async function GET() {
     }
 
     const settings = getOrCreateSettings()
-    return NextResponse.json({ settings })
+    return NextResponse.json({ settings: sanitizeSettings(settings) })
   } catch (error) {
     return NextResponse.json(
       { error: 'Internal server error', code: 'INTERNAL_ERROR' },
@@ -73,7 +84,7 @@ export async function PUT(request: Request) {
       .returning()
       .get()
 
-    return NextResponse.json({ settings: updated })
+    return NextResponse.json({ settings: sanitizeSettings(updated) })
   } catch (error) {
     return NextResponse.json(
       { error: 'Internal server error', code: 'INTERNAL_ERROR' },
