@@ -1,6 +1,6 @@
 # TODOS — Personal ERP
 
-## ✅ 已完成
+## ✅ 已完成 (v0.2.0)
 
 ### Phase 1: 项目基础 (Sprint 1)
 - ✅ Next.js 项目初始化 + TypeScript + Tailwind
@@ -33,23 +33,22 @@
 - ✅ Logout 端点
 - ✅ 密码明文存储 (脱敏)
 
+### P2 代码质量修复 (Sprint 4)
+- ✅ 统一 API 错误消息为中文
+- ✅ linkedModules 字段 Zod 校验
+- ✅ DELETE 操作触发规则评估
+- ✅ 外键存在性校验
+- ✅ Actual Budget 连接超时配置
+
+### E2E 测试 (Sprint 4)
+- ✅ Playwright 测试框架搭建
+- ✅ 登录流程测试（3 个用例）
+- ✅ Goals CRUD 测试（5 个用例）
+- ✅ Habits 打卡测试（6 个用例）
+- ✅ Dashboard 展示测试（7 个用例）
+- ✅ 35/35 测试全部通过
+
 ## ⏳ 待完成
-
-### P2: 代码质量
-- **What**: 修复 MEDIUM 级别问题
-- **Why**: 提升代码质量和可维护性
-- **Items**:
-  - 错误消息中英文统一
-  - linkedModules 字段清理或实现
-  - DELETE 操作触发规则评估
-  - 外键存在性校验
-  - Actual Budget 连接超时配置
-
-### Phase 4: E2E 测试
-- **What**: 添加 Playwright E2E 测试覆盖核心用户流
-- **Why**: 用户流跨越多组件，单元测试不够
-- **Depends on**: UI 稳定
-- **Status**: UI 已稳定，可以开始
 
 ### Phase 5: 多端同步
 - **What**: 移动端快速记录 + 桌面端看全貌
