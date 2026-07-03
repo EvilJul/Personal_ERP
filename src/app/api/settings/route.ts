@@ -4,6 +4,7 @@ import { isAuthenticated } from '@/lib/auth'
 import { db } from '@/db'
 import { users } from '@/db/schema'
 import { eq } from 'drizzle-orm'
+import { encrypt } from '@/lib/crypto'
 
 export const dynamic = 'force-dynamic'
 
@@ -78,8 +79,15 @@ export async function PUT(request: Request) {
     }
 
     const currentSettings = getOrCreateSettings()
+
+    // 对 actualPassword 进行加密存储
+    const updateData: Record<string, unknown> = { ...parsed.data }
+    if (parsed.data.actualPassword) {
+      updateData.actualPassword = encrypt(parsed.data.actualPassword)
+    }
+
     const updated = db.update(users)
-      .set(parsed.data)
+      .set(updateData)
       .where(eq(users.id, currentSettings.id))
       .returning()
       .get()

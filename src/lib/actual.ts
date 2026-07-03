@@ -1,5 +1,8 @@
 import * as api from '@actual-app/api'
 import path from 'path'
+import { db } from '@/db'
+import { users } from '@/db/schema'
+import { decrypt, isEncrypted } from '@/lib/crypto'
 
 // Actual Budget 同步缓存目录
 // Docker 环境通过 ACTUAL_CACHE_PATH 环境变量指向 /app/actual-cache/
@@ -31,25 +34,50 @@ async function withTimeout<T>(promise: Promise<T>, ms: number = TIMEOUT_MS): Pro
 }
 
 /**
+ * 从数据库设置或环境变量获取 Actual Budget 连接配置
+ * 优先使用数据库中存储的加密设置，环境变量作为降级方案
+ */
+function getActualConfig() {
+  const serverURL = process.env.ACTUAL_SERVER_URL
+  const budgetId = process.env.ACTUAL_BUDGET_ID
+
+  // 尝试从数据库读取设置
+  const settings = db.select().from(users).get()
+
+  // 服务端地址：优先环境变量，其次数据库
+  const resolvedServerURL = serverURL || settings?.actualServerUrl
+  // 预算 ID：优先环境变量，其次数据库
+  const resolvedBudgetId = budgetId || settings?.actualBudgetId
+
+  // 密码：优先环境变量（明文），其次数据库（需解密）
+  let resolvedPassword = process.env.ACTUAL_PASSWORD
+  if (!resolvedPassword && settings?.actualPassword) {
+    const stored = settings.actualPassword
+    resolvedPassword = isEncrypted(stored) ? decrypt(stored) : stored
+  }
+
+  return {
+    serverURL: resolvedServerURL,
+    password: resolvedPassword,
+    budgetId: resolvedBudgetId,
+  }
+}
+
+/**
  * 连接 Actual Budget 服务器并下载预算数据
  * 必须在操作完成后调用 disconnectActual() 释放连接
  */
 export async function connectToActual() {
-  const serverURL = process.env.ACTUAL_SERVER_URL
-  const password = process.env.ACTUAL_PASSWORD
-  const budgetId = process.env.ACTUAL_BUDGET_ID
+  const { serverURL, password, budgetId } = getActualConfig()
 
   if (!serverURL) {
-    throw new Error('ACTUAL_SERVER_URL 环境变量未配置')
+    throw new Error('未配置 Actual Budget 服务端地址（ACTUAL_SERVER_URL 或数据库设置）')
   }
   if (!budgetId) {
-    throw new Error('ACTUAL_BUDGET_ID 环境变量未配置')
+    throw new Error('未配置 Actual Budget 预算 ID（ACTUAL_BUDGET_ID 或数据库设置）')
   }
-
-  // InitConfig 要求 password 为 string（PasswordAuthConfig）或不含 password（NoServerConfig）
-  // 有 serverURL 时必须提供 password
   if (!password) {
-    throw new Error('ACTUAL_PASSWORD 环境变量未配置')
+    throw new Error('未配置 Actual Budget 密码（ACTUAL_PASSWORD 或数据库设置）')
   }
 
   await withTimeout(api.init({
