@@ -37,7 +37,7 @@ export async function GET(request: Request, { params }: RouteParams) {
     return NextResponse.json({ habit })
   } catch (error) {
     return NextResponse.json(
-      { error: 'Internal server error', code: 'INTERNAL_ERROR' },
+      { error: '服务器内部错误', code: 'INTERNAL_ERROR' },
       { status: 500 }
     )
   }
@@ -75,7 +75,7 @@ export async function PUT(request: Request, { params }: RouteParams) {
     return NextResponse.json({ habit })
   } catch (error) {
     return NextResponse.json(
-      { error: 'Internal server error', code: 'INTERNAL_ERROR' },
+      { error: '服务器内部错误', code: 'INTERNAL_ERROR' },
       { status: 500 }
     )
   }
@@ -104,7 +104,7 @@ export async function DELETE(request: Request, { params }: RouteParams) {
     return NextResponse.json({ success: true })
   } catch (error) {
     return NextResponse.json(
-      { error: 'Internal server error', code: 'INTERNAL_ERROR' },
+      { error: '服务器内部错误', code: 'INTERNAL_ERROR' },
       { status: 500 }
     )
   }

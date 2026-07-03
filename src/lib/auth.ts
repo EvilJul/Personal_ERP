@@ -5,11 +5,12 @@ import { timingSafeEqual } from "crypto";
 const SESSION_COOKIE = "erp-session";
 const SESSION_MAX_AGE = 60 * 60 * 24 * 7; // 7 天
 
-// JWT secret - 从环境变量读取，或使用默认值
+// JWT secret - 必须从环境变量读取，未设置时阻止启动
 function getSecret() {
-  const secret =
-    process.env.SESSION_SECRET ||
-    "personal-erp-default-secret-change-in-production";
+  const secret = process.env.SESSION_SECRET;
+  if (!secret) {
+    throw new Error("SESSION_SECRET 环境变量未设置。请在 .env.local 中配置。");
+  }
   return new TextEncoder().encode(secret);
 }
 
@@ -69,13 +70,4 @@ export async function isAuthenticated(): Promise<boolean> {
   } catch {
     return false;
   }
-}
-
-/**
- * 检查给定的 session token 是否有效（供 middleware 等外部使用）
- * 注意：JWT 签名验证是异步操作，此同步函数仅做基本非空检查
- * 完整验证应在 Server Component / API Route 中使用 isAuthenticated()
- */
-export function isValidSessionToken(token: string): boolean {
-  return !!token && token.length > 0;
 }
