@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 import { z } from 'zod'
-import { eq, and } from 'drizzle-orm'
+import { eq } from 'drizzle-orm'
 import { db } from '@/db'
 import { habitEntries } from '@/db/schema'
 import { isAuthenticated } from '@/lib/auth'

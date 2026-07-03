@@ -27,15 +27,27 @@ volumes:
 ### 2. 创建 Dockerfile
 
 ```dockerfile
+# 构建阶段
+FROM node:18-alpine AS builder
+
+WORKDIR /app
+
+COPY package*.json ./
+RUN npm ci
+
+COPY . .
+RUN npm run build
+
+# 运行阶段
 FROM node:18-alpine
 
 WORKDIR /app
 
 COPY package*.json ./
-RUN npm ci --only=production
+RUN npm ci --omit=dev
 
-COPY . .
-RUN npm run build
+COPY --from=builder /app/.next ./.next
+COPY --from=builder /app/public ./public
 
 EXPOSE 3000
 

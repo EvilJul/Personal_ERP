@@ -81,7 +81,7 @@ describe('auth 模块', () => {
       expect(await isAuthenticated()).toBe(true)
 
       // 通过 store 检查 cookie 名称为 erp-session
-      const store = (await import('next/headers')).__store as Map<string, string>
+      const store = (await import('next/headers') as unknown as { __store: Map<string, string> }).__store
       expect(store.has('erp-session')).toBe(true)
     })
   })

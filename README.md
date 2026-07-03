@@ -53,6 +53,12 @@ npm start
 ### 测试
 
 ```bash
+# 单元测试
+npm run test:unit
+
+# 单元测试（监听模式）
+npm run test:watch
+
 # E2E 测试
 npm run test:e2e
 

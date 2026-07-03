@@ -46,7 +46,6 @@ export const habitEntries = sqliteTable('habit_entries', {
   createdAt: integer('created_at', { mode: 'timestamp' }).notNull().default(sql`(unixepoch())`),
 }, (table) => [
   unique('habit_entries_habit_id_date_unique').on(table.habitId, table.date),
-  index('habit_date_idx').on(table.habitId, table.date),
 ])
 
 // ====== connection_rules ======

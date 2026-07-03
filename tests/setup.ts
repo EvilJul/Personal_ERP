@@ -4,4 +4,4 @@
  */
 process.env.SESSION_SECRET = 'test-session-secret-for-unit-tests-only'
 process.env.APP_PASSWORD = 'test-password-123'
-process.env.NODE_ENV = 'test'
+;(process.env as Record<string, string>)['NODE_ENV'] = 'test'
