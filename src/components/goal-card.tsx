@@ -15,6 +15,7 @@ type GoalCardProps = {
   targetValue: number
   unit?: string
   deadline?: string
+  trend?: number
   className?: string
 }
 
@@ -35,7 +36,7 @@ function formatDeadline(deadline: string): string {
   return date.toLocaleDateString('zh-CN', { month: 'short', day: 'numeric' })
 }
 
-export function GoalCard({ id, title, currentValue, targetValue, unit, deadline, className }: GoalCardProps) {
+export function GoalCard({ id, title, currentValue, targetValue, unit, deadline, trend, className }: GoalCardProps) {
   const router = useRouter()
   const [deleting, setDeleting] = useState(false)
   const progress = formatProgress(currentValue, targetValue)
@@ -74,6 +75,16 @@ export function GoalCard({ id, title, currentValue, targetValue, unit, deadline,
           </ProgressLabel>
           <ProgressValue className="text-xs font-medium text-slate-700" />
         </Progress>
+        {trend !== undefined && trend !== 0 && (
+          <span
+            className={cn(
+              'mt-1 inline-block text-xs font-medium',
+              trend > 0 ? 'text-green-500' : 'text-red-500',
+            )}
+          >
+            {trend > 0 ? '↑' : '↓'} {Math.abs(trend)}%
+          </span>
+        )}
       </div>
 
       {/* 操作按钮 */}

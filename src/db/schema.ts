@@ -87,3 +87,26 @@ export const insights = sqliteTable('insights', {
   read: integer('read').notNull().default(0),
   createdAt: integer('created_at', { mode: 'timestamp' }).notNull().default(sql`(unixepoch())`),
 })
+
+// ====== accounts ======
+export const accounts = sqliteTable('accounts', {
+  id: text('id').primaryKey().$defaultFn(() => nanoid()),
+  name: text('name').notNull(),
+  type: text('type').notNull(), // checking, savings, credit
+  balance: real('balance').notNull().default(0),
+  syncId: text('sync_id'), // Actual Budget 的 account ID
+  createdAt: integer('created_at', { mode: 'timestamp' }).notNull().default(sql`(unixepoch())`),
+  updatedAt: integer('updated_at', { mode: 'timestamp' }).notNull().default(sql`(unixepoch())`),
+})
+
+// ====== transactions ======
+export const transactions = sqliteTable('transactions', {
+  id: text('id').primaryKey().$defaultFn(() => nanoid()),
+  accountId: text('account_id').notNull().references(() => accounts.id),
+  amount: real('amount').notNull(),
+  date: text('date').notNull(), // YYYY-MM-DD
+  payee: text('payee'),
+  category: text('category'),
+  syncId: text('sync_id'), // Actual Budget 的 transaction ID
+  createdAt: integer('created_at', { mode: 'timestamp' }).notNull().default(sql`(unixepoch())`),
+})

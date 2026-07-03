@@ -12,6 +12,7 @@ type HabitCardProps = {
   streak?: number
   completedToday: boolean
   recentDays?: boolean[]
+  completionTrend?: number
   onCheckinChange?: (completed: boolean) => void
   className?: string
 }
@@ -28,6 +29,7 @@ export function HabitCard({
   streak = 0,
   completedToday,
   recentDays = [],
+  completionTrend,
   onCheckinChange,
   className,
 }: HabitCardProps) {
@@ -79,6 +81,16 @@ export function HabitCard({
             {streak > 0 && (
               <span className="text-xs text-slate-500">
                 连续 {streak} 天
+              </span>
+            )}
+            {completionTrend !== undefined && completionTrend !== 0 && (
+              <span
+                className={cn(
+                  'text-xs font-medium',
+                  completionTrend > 0 ? 'text-green-500' : 'text-red-500',
+                )}
+              >
+                {completionTrend > 0 ? '↑' : '↓'} {Math.abs(completionTrend)}%
               </span>
             )}
             {frequency && (

@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server'
 import { z } from 'zod'
 import { isAuthenticated } from '@/lib/auth'
 import { getHabitById, getHabitEntry, markHabitEntry } from '@/db/queries/habits'
+import { evaluateRules } from '@/engine/rules'
 
 export const dynamic = 'force-dynamic'
 
@@ -51,6 +52,12 @@ export async function POST(request: Request, { params }: RouteParams) {
     }
 
     const entry = markHabitEntry(id, date)
+
+    // 异步触发规则评估，不阻塞响应
+    evaluateRules('habits').catch((err) =>
+      console.error('规则评估失败:', err)
+    )
+
     return NextResponse.json({ entry }, { status: 201 })
   } catch (error) {
     return NextResponse.json(

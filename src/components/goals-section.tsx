@@ -5,8 +5,12 @@ import { Button } from '@/components/ui/button'
 import Link from 'next/link'
 import type { Goal } from '@/db/queries/goals'
 
+type GoalWithTrend = Goal & {
+  trend?: number
+}
+
 type GoalsSectionProps = {
-  goals: Goal[]
+  goals: GoalWithTrend[]
   className?: string
 }
 
@@ -42,6 +46,7 @@ export function GoalsSection({ goals, className }: GoalsSectionProps) {
               targetValue={goal.targetValue}
               unit={goal.unit ?? undefined}
               deadline={goal.deadline ?? undefined}
+              trend={goal.trend}
             />
           ))}
         </div>

@@ -11,6 +11,7 @@ type DashboardHabit = {
   streak: number
   completedToday: boolean
   recentDays: boolean[]
+  completionTrend?: number
 }
 
 type HabitsSectionProps = {
@@ -50,6 +51,7 @@ export function HabitsSection({ habits, className }: HabitsSectionProps) {
               streak={habit.streak}
               completedToday={habit.completedToday}
               recentDays={habit.recentDays}
+              completionTrend={habit.completionTrend}
             />
           ))}
         </div>

@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server'
 import { z } from 'zod'
 import { isAuthenticated } from '@/lib/auth'
 import { getGoalById, updateGoal, deleteGoal } from '@/db/queries/goals'
+import { evaluateRules } from '@/engine/rules'
 
 export const dynamic = 'force-dynamic'
 
@@ -73,6 +74,11 @@ export async function PUT(request: Request, { params }: RouteParams) {
         { status: 404 }
       )
     }
+
+    // 异步触发规则评估，不阻塞响应
+    evaluateRules('goals').catch((err) =>
+      console.error('规则评估失败:', err)
+    )
 
     return NextResponse.json({ goal })
   } catch (error) {

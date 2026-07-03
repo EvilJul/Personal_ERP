@@ -10,19 +10,29 @@ import { eq } from 'drizzle-orm'
 
 export const dynamic = 'force-dynamic'
 
-/** 计算连续打卡天数（从昨天往回数） */
-function computeStreak(habitId: string): number {
-  const entries = db.select().from(habitEntries)
-    .where(eq(habitEntries.habitId, habitId))
-    .all()
+/**
+ * 计算目标进度变化趋势
+ * 当前实现：返回 0（无历史数据表）
+ * 后续可通过 goal_history 表计算近 7 天进度变化百分比
+ */
+function computeGoalTrend(_goalId: string): number {
+  // TODO: 当 goal_history 表建立后，计算 (本周平均进度 - 上周平均进度) / 上周平均进度 * 100
+  return 0
+}
 
-  const completedDates = new Set(
-    entries.filter(e => e.completed === 1).map(e => e.date)
-  )
-
+/**
+ * 计算连续打卡天数（从今天或昨天往回数）
+ * 返回连续打卡天数
+ */
+function computeHabitStreak(completedDates: Set<string>): number {
   let streak = 0
   const date = new Date()
-  date.setDate(date.getDate() - 1) // 从昨天开始检查
+  const todayStr = date.toISOString().split('T')[0]
+
+  // 从今天开始检查，如果今天未打卡则从昨天开始
+  if (!completedDates.has(todayStr)) {
+    date.setDate(date.getDate() - 1)
+  }
 
   while (true) {
     const dateStr = date.toISOString().split('T')[0]
@@ -34,25 +44,39 @@ function computeStreak(habitId: string): number {
     }
   }
 
-  // 如果今天已完成，streak +1
-  const todayStr = new Date().toISOString().split('T')[0]
-  if (completedDates.has(todayStr)) {
-    streak++
-  }
-
   return streak
 }
 
+/**
+ * 计算近 14 天打卡率趋势
+ * 返回最近 7 天完成率 - 前 7 天完成率（百分点差值）
+ */
+function computeHabitCompletionTrend(completedDates: Set<string>): number {
+  const today = new Date()
+  let recent7 = 0
+  let prev7 = 0
+
+  for (let i = 0; i < 7; i++) {
+    const d = new Date(today)
+    d.setDate(d.getDate() - i)
+    if (completedDates.has(d.toISOString().split('T')[0])) {
+      recent7++
+    }
+  }
+
+  for (let i = 7; i < 14; i++) {
+    const d = new Date(today)
+    d.setDate(d.getDate() - i)
+    if (completedDates.has(d.toISOString().split('T')[0])) {
+      prev7++
+    }
+  }
+
+  return Math.round(((recent7 - prev7) / 7) * 100)
+}
+
 /** 计算近7天打卡记录 */
-function computeRecentDays(habitId: string): boolean[] {
-  const entries = db.select().from(habitEntries)
-    .where(eq(habitEntries.habitId, habitId))
-    .all()
-
-  const completedDates = new Set(
-    entries.filter(e => e.completed === 1).map(e => e.date)
-  )
-
+function computeRecentDaysFromSet(completedDates: Set<string>): boolean[] {
   const days: boolean[] = []
   for (let i = 6; i >= 0; i--) {
     const date = new Date()
@@ -68,18 +92,36 @@ export default async function DashboardPage() {
   const rawHabits = getAllHabits()
   const rawInsights = getAllInsights()
 
-  // 计算习惯的展示字段
+  // 计算习惯的展示字段 + 趋势
   const habits = rawHabits.map(habit => {
-    const recentDays = computeRecentDays(habit.id)
+    const entries = db.select().from(habitEntries)
+      .where(eq(habitEntries.habitId, habit.id))
+      .all()
+
+    const completedDates = new Set(
+      entries.filter(e => e.completed === 1).map(e => e.date)
+    )
+
+    const recentDays = computeRecentDaysFromSet(completedDates)
+    const streak = computeHabitStreak(completedDates)
+    const completionTrend = computeHabitCompletionTrend(completedDates)
+
     return {
       id: habit.id,
       title: habit.title,
       frequency: habit.frequency,
-      streak: computeStreak(habit.id),
+      streak,
       completedToday: recentDays[recentDays.length - 1] ?? false,
       recentDays,
+      completionTrend,
     }
   })
+
+  // 计算目标趋势数据
+  const goalsWithTrend = goals.map(goal => ({
+    ...goal,
+    trend: computeGoalTrend(goal.id),
+  }))
 
   // 映射洞察的 source 字段
   const insights = rawInsights.map(insight => ({
@@ -107,7 +149,7 @@ export default async function DashboardPage() {
 
         {/* Goals + Habits 双栏（Desktop）/ 单栏（Tablet & Mobile） */}
         <div className="grid grid-cols-1 gap-6 md:gap-8 lg:grid-cols-[3fr_2fr]">
-          <GoalsSection goals={goals} />
+          <GoalsSection goals={goalsWithTrend} />
           <HabitsSection habits={habits} />
         </div>
       </div>
