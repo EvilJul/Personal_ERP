@@ -13,14 +13,6 @@ test.describe('仪表盘', () => {
     await login(page)
   })
 
-  test('应显示页面标题 Personal ERP', async ({ page }) => {
-    await expect(page.locator('h1')).toContainText('Personal ERP')
-  })
-
-  test('应显示副标题', async ({ page }) => {
-    await expect(page.locator('text=你的个人生活管理系统')).toBeVisible()
-  })
-
   test('应显示洞察区块', async ({ page }) => {
     await expect(page.locator('h2', { hasText: '洞察' })).toBeVisible()
   })

@@ -36,6 +36,7 @@ test.describe('认证流程', () => {
     await page.fill('input[type="password"]', process.env.APP_PASSWORD || 'GiX8HXfLe4WyM2oG')
     await page.click('button[type="submit"]')
     await expect(page).toHaveURL('/')
-    await expect(page.locator('h1')).toContainText('Personal ERP')
+    // Dashboard 已移除标题，检查页面正常加载
+    await expect(page.locator('h2', { hasText: '洞察' })).toBeVisible()
   })
 })
