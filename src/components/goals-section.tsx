@@ -24,7 +24,7 @@ export function GoalsSection({ goals, total, className }: GoalsSectionProps) {
 
   return (
     <section className={cn('w-full animate-fade-in-up', className)}>
-      <div className="mb-3 flex items-center justify-between">
+      <div className="mb-4 flex items-center justify-between">
         <h2 className="text-base font-semibold text-slate-900">目标</h2>
         <Button variant="ghost" size="sm" render={<Link href="/goals" />} nativeButton={false}>
           查看全部

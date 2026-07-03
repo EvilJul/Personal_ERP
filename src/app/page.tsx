@@ -179,7 +179,7 @@ export default async function DashboardPage() {
 
   return (
     <main className="min-h-screen pb-20 md:pb-4 animate-fade-in-up" style={{ background: 'linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%)' }}>
-      <div className="mx-auto max-w-6xl px-4 py-4 md:px-6 md:py-6">
+      <div className="mx-auto max-w-5xl px-4 py-6 md:px-6 md:py-8 space-y-6">
         {/* 统计卡片栏 + 成就图标 */}
         <StatsBar
           goalProgress={avgGoalProgress}
@@ -189,11 +189,17 @@ export default async function DashboardPage() {
           unlockedBadges={unlockedBadges}
         />
 
+        {/* 渐变分隔线 */}
+        <div className="h-px bg-gradient-to-r from-transparent via-slate-200 to-transparent" />
+
         {/* 洞察区域 */}
-        <InsightsSection insights={insights} className="mb-4" />
+        <InsightsSection insights={insights} />
+
+        {/* 渐变分隔线 */}
+        <div className="h-px bg-gradient-to-r from-transparent via-slate-200 to-transparent" />
 
         {/* Goals + Habits 双栏（60:40 比例） */}
-        <div className="grid grid-cols-1 gap-4 lg:grid-cols-[3fr_2fr]">
+        <div className="grid grid-cols-1 gap-6 lg:grid-cols-[3fr_2fr]">
           <GoalsSection goals={goalsWithTrend} total={goals.length} />
           <HabitsSection habits={habits} total={rawHabits.length} />
         </div>

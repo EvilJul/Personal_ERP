@@ -23,6 +23,14 @@ function formatProgress(current: number, target: number): number {
   return Math.min(Math.round((current / target) * 100), 100)
 }
 
+/** 根据进度百分比返回对应的文字颜色类名 */
+function getProgressTextColor(progress: number): string {
+  if (progress >= 75) return 'text-green-600'
+  if (progress >= 50) return 'text-yellow-600'
+  if (progress >= 25) return 'text-orange-600'
+  return 'text-red-500'
+}
+
 function formatDeadline(deadline: string): string {
   const date = new Date(deadline)
   const now = new Date()
@@ -39,6 +47,7 @@ export function GoalCard({ id, title, currentValue, targetValue, unit, deadline,
   const router = useRouter()
   const [deleting, setDeleting] = useState(false)
   const progress = formatProgress(currentValue, targetValue)
+  const progressColor = getProgressTextColor(progress)
 
   async function handleDelete() {
     if (!confirm('确定要删除这个目标吗？')) return
@@ -70,7 +79,8 @@ export function GoalCard({ id, title, currentValue, targetValue, unit, deadline,
       <div className="mt-3 flex items-center gap-4">
         <ProgressRing percentage={progress} size={56} strokeWidth={5} className="relative shrink-0" stripeAnimate={progress > 0} />
         <div className="min-w-0 flex-1">
-          <p className="text-xs text-slate-500">
+          <p className={cn('text-sm font-semibold tabular-nums', progressColor)}>{progress}%</p>
+          <p className="mt-0.5 text-xs text-slate-500">
             {currentValue}{unit ? ` ${unit}` : ''} / {targetValue}{unit ? ` ${unit}` : ''}
           </p>
           {trend !== undefined && trend !== 0 && (
