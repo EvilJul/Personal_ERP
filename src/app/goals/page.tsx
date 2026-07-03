@@ -2,7 +2,7 @@ import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { EmptyState } from '@/components/empty-state'
 import { GoalCard } from '@/components/goal-card'
-import { headers } from 'next/headers'
+import { headers, cookies } from 'next/headers'
 
 export const dynamic = 'force-dynamic'
 
@@ -18,10 +18,13 @@ type Goal = {
 async function getGoals(): Promise<Goal[]> {
   try {
     const headersList = await headers()
+    const cookieStore = await cookies()
     const host = headersList.get('host') ?? 'localhost:3000'
     const protocol = headersList.get('x-forwarded-proto') ?? 'http'
+    const cookie = cookieStore.toString()
     const res = await fetch(`${protocol}://${host}/api/goals`, {
       cache: 'no-store',
+      headers: cookie ? { cookie } : {},
     })
     if (!res.ok) return []
     const data = await res.json()
