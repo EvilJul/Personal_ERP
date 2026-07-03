@@ -37,7 +37,7 @@ test.describe('目标 CRUD', () => {
     await page.fill('input#unit', '元')
     await page.click('button[type="submit"]')
     await expect(page).toHaveURL(/.*goals/)
-    await expect(page.locator('h4', { hasText: 'E2E 测试目标' })).toBeVisible()
+    await expect(page.locator('h4', { hasText: 'E2E 测试目标' }).first()).toBeVisible()
   })
 
   test('创建目标后应能在列表中看到编辑和删除按钮', async ({ page }) => {
@@ -66,7 +66,7 @@ test.describe('目标 CRUD', () => {
     await page.fill('input#title', '已更新的目标')
     await page.click('button[type="submit"]')
     await expect(page).toHaveURL(/.*goals/)
-    await expect(page.locator('h4', { hasText: '已更新的目标' })).toBeVisible()
+    await expect(page.locator('h4', { hasText: '已更新的目标' }).first()).toBeVisible()
   })
 
   test('新建目标页应有返回链接', async ({ page }) => {

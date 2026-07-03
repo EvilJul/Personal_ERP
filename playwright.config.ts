@@ -8,6 +8,7 @@ export default defineConfig({
   use: {
     baseURL: 'http://localhost:3000',
     trace: 'on-first-retry',
+    channel: 'chrome',
   },
   webServer: {
     command: 'npm run dev',

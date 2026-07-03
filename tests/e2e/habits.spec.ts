@@ -35,7 +35,7 @@ test.describe('习惯打卡', () => {
     await page.locator('select#frequency').selectOption('daily')
     await page.click('button[type="submit"]')
     await expect(page).toHaveURL(/.*habits/)
-    await expect(page.locator('h4', { hasText: 'E2E 测试习惯' })).toBeVisible()
+    await expect(page.locator('h4', { hasText: 'E2E 测试习惯' }).first()).toBeVisible()
   })
 
   test('习惯卡片应有打卡按钮', async ({ page }) => {

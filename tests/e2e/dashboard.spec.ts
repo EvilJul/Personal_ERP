@@ -35,23 +35,23 @@ test.describe('仪表盘', () => {
 
   test('目标区块应有查看全部链接', async ({ page }) => {
     const goalsSection = page.locator('section').filter({ has: page.locator('h2', { hasText: '目标' }) })
-    await expect(goalsSection.getByRole('link', { name: '查看全部' })).toBeVisible()
+    await expect(goalsSection.getByRole('button', { name: '查看全部' })).toBeVisible()
   })
 
   test('习惯区块应有查看全部链接', async ({ page }) => {
     const habitsSection = page.locator('section').filter({ has: page.locator('h2', { hasText: '习惯' }) })
-    await expect(habitsSection.getByRole('link', { name: '查看全部' })).toBeVisible()
+    await expect(habitsSection.getByRole('button', { name: '查看全部' })).toBeVisible()
   })
 
   test('点击目标查看全部应跳转到目标页', async ({ page }) => {
     const goalsSection = page.locator('section').filter({ has: page.locator('h2', { hasText: '目标' }) })
-    await goalsSection.getByRole('link', { name: '查看全部' }).click()
+    await goalsSection.getByRole('button', { name: '查看全部' }).click()
     await expect(page).toHaveURL(/.*goals/)
   })
 
   test('点击习惯查看全部应跳转到习惯页', async ({ page }) => {
     const habitsSection = page.locator('section').filter({ has: page.locator('h2', { hasText: '习惯' }) })
-    await habitsSection.getByRole('link', { name: '查看全部' }).click()
+    await habitsSection.getByRole('button', { name: '查看全部' }).click()
     await expect(page).toHaveURL(/.*habits/)
   })
 
