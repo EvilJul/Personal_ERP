@@ -601,10 +601,11 @@ export function getGoalById(id: string) {
 
 ## 当前任务
 
-- **正在做**：Sprint 1 - 项目初始化 + SQLite + Auth + Dashboard 骨架
-- **紧急性**：高
-- **当前阶段**：阶段 #2.5（CLAUDE.md 生成），下一步进入阶段 #3（OpenSpec）
-- **已完成文件**：设计文档 (`~/.gstack/projects/Personal_ERP/fusheng-unknown-design-20260702-155729.md`)
-- **注意事项**：Actual Budget 连接需要运行中的 Actual Budget 服务器
+- **正在做**：3 个 Sprint 完成 + P1 问题修复完成
+- **紧急性**：低
+- **当前阶段**：阶段 #5-8（Review/CSO/QA/Ship 可选）
+- **已完成**：Sprint 1-3 全部功能 + 代码审查 + 安全审计 + P1 修复
+- **下一步**：运行 `/ship` 发布，或规划 Sprint 4
+- **注意事项**：SESSION_SECRET 必须在 .env.local 中配置
 
 <!-- PROJECT-CONTENT-END -->
