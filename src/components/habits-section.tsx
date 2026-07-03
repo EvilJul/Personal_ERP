@@ -21,7 +21,7 @@ type HabitsSectionProps = {
   className?: string
 }
 
-const DASHBOARD_LIMIT = 3
+const DASHBOARD_LIMIT = 5
 
 export function HabitsSection({ habits, total, className }: HabitsSectionProps) {
   const displayHabits = habits.slice(0, DASHBOARD_LIMIT)
@@ -29,8 +29,8 @@ export function HabitsSection({ habits, total, className }: HabitsSectionProps) 
 
   return (
     <section className={cn('w-full animate-fade-in-up', className)} style={{ animationDelay: '100ms' }}>
-      <div className="mb-4 flex items-center justify-between">
-        <h2 className="text-base font-semibold text-slate-900">习惯</h2>
+      <div className="mb-3 flex items-center justify-between">
+        <h2 className="text-lg font-semibold text-slate-900">习惯</h2>
         <Button variant="ghost" size="sm" render={<Link href="/habits" />} nativeButton={false}>
           查看全部
         </Button>
@@ -48,7 +48,7 @@ export function HabitsSection({ habits, total, className }: HabitsSectionProps) 
           }
         />
       ) : (
-        <div className="space-y-3">
+        <div className="space-y-2">
           {displayHabits.map((habit) => (
             <div key={habit.id} className="stagger-item">
               <HabitCard

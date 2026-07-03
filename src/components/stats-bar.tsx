@@ -18,9 +18,9 @@ const colorStyles: Record<StatCardProps['color'], { bg: string; iconBg: string; 
 function StatCard({ label, value, icon, color }: StatCardProps) {
   const styles = colorStyles[color]
   return (
-    <div className={`stagger-item card-hover flex items-center gap-3 rounded-xl border border-slate-200/80 p-4 shadow-[0_1px_3px_rgba(0,0,0,0.04)] ${styles.bg}`}>
-      <div className={`flex size-10 shrink-0 items-center justify-center rounded-lg ${styles.iconBg}`}>
-        <span className={`text-base ${styles.text}`}>{icon}</span>
+    <div className={`stagger-item card-hover flex items-center gap-3 rounded-xl border border-slate-200/80 p-3 shadow-[0_1px_3px_rgba(0,0,0,0.04)] min-h-[72px] ${styles.bg}`}>
+      <div className={`flex size-11 shrink-0 items-center justify-center rounded-lg ${styles.iconBg}`}>
+        <span className={`text-lg ${styles.text}`}>{icon}</span>
       </div>
       <div className="min-w-0">
         <p className="text-2xl font-bold tabular-nums leading-tight text-slate-900">{value}</p>
@@ -46,7 +46,7 @@ type StatsBarProps = {
 
 export function StatsBar({ goalProgress, checkinRate, streakDays, insightCount, unlockedBadges }: StatsBarProps) {
   return (
-    <div className="mb-6 flex items-center gap-3">
+    <div className="mb-4 flex items-center gap-3">
       {/* 5 个统计卡片，等分宽度 */}
       <div className="grid flex-1 grid-cols-5 gap-3">
         <StatCard label="目标进度" value={`${goalProgress}%`} icon="🎯" color="green" />

@@ -17,8 +17,8 @@ type InsightsSectionProps = {
 export function InsightsSection({ insights, className }: InsightsSectionProps) {
   return (
     <section className={cn('w-full animate-fade-in-up', className)}>
-      <div className="mb-4 flex items-center justify-between">
-        <h2 className="text-base font-semibold text-slate-900">洞察</h2>
+      <div className="mb-3 flex items-center justify-between">
+        <h2 className="text-lg font-semibold text-slate-900">洞察</h2>
       </div>
 
       {insights.length === 0 ? (
@@ -28,8 +28,8 @@ export function InsightsSection({ insights, className }: InsightsSectionProps) {
           description="先添加目标和习惯，系统会为你生成跨模块的洞察分析"
         />
       ) : (
-        <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
-          {insights.map((insight, index) => (
+        <div className="grid grid-cols-1 gap-3 md:grid-cols-3">
+          {insights.slice(0, 3).map((insight, index) => (
             <div key={insight.id} className="stagger-item">
               <InsightCard
                 message={insight.message}

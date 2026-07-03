@@ -52,7 +52,7 @@ export function InsightCard({ message, severity, source, isFirst, className }: I
   return (
     <div
       className={cn(
-        'card-hover rounded-xl border border-l-[3px] p-4 bg-gradient-to-r from-white to-slate-50 shadow-[0_2px_8px_rgba(0,0,0,0.06)]',
+        'card-hover rounded-xl border border-l-[3px] p-5 bg-gradient-to-r from-white to-slate-50 shadow-[0_2px_8px_rgba(0,0,0,0.06)]',
         'border-slate-200',
         styles.border,
         styles.bg,
@@ -70,7 +70,7 @@ export function InsightCard({ message, severity, source, isFirst, className }: I
               {severityLabel[severity]}
             </span>
           </div>
-          <p className="mt-2 text-sm text-slate-900">{message}</p>
+          <p className="mt-2 text-sm leading-relaxed text-slate-900">{message}</p>
           {source && (
             <p className="mt-1 text-xs text-slate-500">来源: {source}</p>
           )}

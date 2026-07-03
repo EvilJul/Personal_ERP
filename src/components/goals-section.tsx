@@ -16,7 +16,7 @@ type GoalsSectionProps = {
   className?: string
 }
 
-const DASHBOARD_LIMIT = 3
+const DASHBOARD_LIMIT = 5
 
 export function GoalsSection({ goals, total, className }: GoalsSectionProps) {
   const displayGoals = goals.slice(0, DASHBOARD_LIMIT)
@@ -24,8 +24,8 @@ export function GoalsSection({ goals, total, className }: GoalsSectionProps) {
 
   return (
     <section className={cn('w-full animate-fade-in-up', className)}>
-      <div className="mb-4 flex items-center justify-between">
-        <h2 className="text-base font-semibold text-slate-900">目标</h2>
+      <div className="mb-3 flex items-center justify-between">
+        <h2 className="text-lg font-semibold text-slate-900">目标</h2>
         <Button variant="ghost" size="sm" render={<Link href="/goals" />} nativeButton={false}>
           查看全部
         </Button>
@@ -43,7 +43,7 @@ export function GoalsSection({ goals, total, className }: GoalsSectionProps) {
           }
         />
       ) : (
-        <div className="space-y-3">
+        <div className="space-y-2">
           {displayGoals.map((goal) => (
             <div key={goal.id} className="stagger-item">
               <GoalCard
