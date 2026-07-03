@@ -99,6 +99,31 @@ export const accounts = sqliteTable('accounts', {
   updatedAt: integer('updated_at', { mode: 'timestamp' }).notNull().default(sql`(unixepoch())`),
 })
 
+// ====== badges ======
+export const badges = sqliteTable('badges', {
+  id: text('id').primaryKey().$defaultFn(() => nanoid()),
+  name: text('name').notNull(),
+  category: text('category').notNull(), // goal/habit/finance/special
+  condition: text('condition').notNull(), // JSON condition
+  icon: text('icon').notNull(), // emoji or SVG
+  description: text('description'),
+  rarity: text('rarity').notNull().default('common'), // common/rare/epic/legendary
+  tier: integer('tier').notNull().default(1), // 1=铜, 2=银, 3=金, 4=钻石
+  createdAt: integer('created_at', { mode: 'timestamp' }).notNull().default(sql`(unixepoch())`),
+  updatedAt: integer('updated_at', { mode: 'timestamp' }).notNull().default(sql`(unixepoch())`),
+})
+
+// ====== user_badges ======
+export const userBadges = sqliteTable('user_badges', {
+  id: text('id').primaryKey().$defaultFn(() => nanoid()),
+  userId: text('user_id').notNull().default('default'),
+  badgeId: text('badge_id').notNull().references(() => badges.id),
+  tier: integer('tier').notNull().default(1), // 当前等级 1-4
+  unlockedAt: integer('unlocked_at', { mode: 'timestamp' }).notNull().default(sql`(unixepoch())`),
+  createdAt: integer('created_at', { mode: 'timestamp' }).notNull().default(sql`(unixepoch())`),
+  updatedAt: integer('updated_at', { mode: 'timestamp' }).notNull().default(sql`(unixepoch())`),
+})
+
 // ====== transactions ======
 export const transactions = sqliteTable('transactions', {
   id: text('id').primaryKey().$defaultFn(() => nanoid()),

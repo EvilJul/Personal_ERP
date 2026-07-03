@@ -1,10 +1,12 @@
 import { InsightsSection } from '@/components/insights-section'
 import { GoalsSection } from '@/components/goals-section'
 import { HabitsSection } from '@/components/habits-section'
+import { BadgesSection } from '@/components/badges-section'
 import { StatsBar } from '@/components/stats-bar'
 import { getAllGoals } from '@/db/queries/goals'
 import { getAllHabits } from '@/db/queries/habits'
 import { getAllInsights } from '@/db/queries/insights'
+import { getAllBadgesWithUserStatus } from '@/db/queries/badges'
 import { db } from '@/db'
 import { habitEntries } from '@/db/schema'
 
@@ -102,6 +104,7 @@ export default async function DashboardPage() {
   const goals = getAllGoals()
   const rawHabits = getAllHabits()
   const rawInsights = getAllInsights()
+  const allBadges = getAllBadgesWithUserStatus()
 
   // 一次性查询所有 habit entries，按 habitId 分组（修复 N+1 查询）
   const allEntries = db.select().from(habitEntries).all()
@@ -193,6 +196,11 @@ export default async function DashboardPage() {
           <GoalsSection goals={goalsWithTrend} total={goals.length} />
           <HabitsSection habits={habits} total={rawHabits.length} />
         </div>
+
+        <hr className="divider-gradient my-6 md:my-8" />
+
+        {/* Badges 徽章区域 */}
+        <BadgesSection badges={allBadges} />
       </div>
     </main>
   )
