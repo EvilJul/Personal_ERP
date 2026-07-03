@@ -48,6 +48,16 @@
 - ✅ Dashboard 展示测试（7 个用例）
 - ✅ 35/35 测试全部通过
 
+### UI 优化 (Sprint 5)
+- ✅ Bold Modern 设计风格
+- ✅ 统计卡片栏（目标进度、打卡率、连续天数、洞察）
+- ✅ 圆环进度条组件
+- ✅ 可扩展布局（Top 5 限制 + 搜索/筛选/分页）
+- ✅ 动画系统（fadeInUp, stagger, checkBounce, progressFill）
+- ✅ 卡片 hover 悬浮效果
+- ✅ 渐变背景 + 渐变分隔线
+- ✅ P0 密码加密 (AES-256-GCM)
+
 ## ⏳ 待完成
 
 ### Phase 5: 多端同步

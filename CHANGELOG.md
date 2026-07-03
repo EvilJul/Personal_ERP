@@ -28,3 +28,26 @@
 - 密码比较使用 timingSafeEqual
 - Settings API 密码脱敏
 - .env 加入 .gitignore
+
+## [0.3.0] - 2026-07-03
+
+### Added
+- 统计卡片栏：目标进度、打卡率、连续天数、洞察数量
+- 圆环进度条组件 (ProgressRing)
+- 搜索筛选组件：实时搜索 + 状态筛选（全部/进行中/已完成）
+- 分页组件：每页 20 个 + 省略号 + 上下页
+- 动画系统：fadeInUp、stagger、checkBounce、progressFill
+- 卡片 hover 悬浮效果
+- 渐变背景 + 渐变分隔线
+- AES-256-GCM 密码加密
+
+### Changed
+- Dashboard 限制展示 Top 5 目标/习惯，超出显示 "+N 个更多"
+- 目标按进度百分比降序排序
+- 习惯按打卡率降序排序
+- 管理页面集成搜索/筛选/分页
+- 移除 Dashboard 顶部标题和 logo
+
+### Fixed
+- E2E 测试选择器适配 Bold Modern 设计
+- E2E 测试移除标题检查
