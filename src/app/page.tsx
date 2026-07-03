@@ -162,18 +162,8 @@ export default async function DashboardPage() {
   const maxStreak = habits.reduce((max, h) => Math.max(max, h.streak), 0)
 
   return (
-    <main className="min-h-screen bg-slate-50 pb-20 md:pb-8">
+    <main className="min-h-screen pb-20 md:pb-8" style={{ background: 'linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%)' }}>
       <div className="mx-auto max-w-6xl px-4 py-6 md:px-6 md:py-8">
-        {/* 页面标题 */}
-        <header className="mb-6 md:mb-8">
-          <h1 className="text-2xl font-semibold text-slate-900">
-            Personal ERP
-          </h1>
-          <p className="mt-1 text-sm text-slate-500">
-            你的个人生活管理系统
-          </p>
-        </header>
-
         {/* 统计卡片栏 */}
         <StatsBar
           goalProgress={avgGoalProgress}
@@ -182,8 +172,12 @@ export default async function DashboardPage() {
           insightCount={insights.length}
         />
 
+        <hr className="divider-gradient mb-6 md:mb-8" />
+
         {/* Insights - 2列网格 */}
         <InsightsSection insights={insights} className="mb-8" />
+
+        <hr className="divider-gradient mb-6 md:mb-8" />
 
         {/* Goals + Habits 双栏（5:3 比例） */}
         <div className="grid grid-cols-1 gap-6 md:gap-8 lg:grid-cols-[5fr_3fr]">

@@ -73,7 +73,7 @@ export function HabitCard({
   }
 
   return (
-    <div className={cn('rounded-xl border border-slate-200 bg-white p-4 shadow-[0_1px_3px_rgba(0,0,0,0.04)]', className)}>
+    <div className={cn('rounded-xl border border-slate-200 bg-white p-4 shadow-[0_1px_3px_rgba(0,0,0,0.04)] transition-all duration-200 hover:shadow-md hover:-translate-y-0.5', className)}>
       <div className="flex items-center justify-between gap-3">
         <div className="min-w-0 flex-1">
           <h4 className="text-sm font-medium text-slate-900">{title}</h4>

@@ -151,3 +151,10 @@
     @apply font-sans;
   }
 }
+
+/* 渐变分隔线 */
+.divider-gradient {
+  border: none;
+  height: 1px;
+  background: linear-gradient(to right, transparent, #e2e8f0, transparent);
+}

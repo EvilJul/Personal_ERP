@@ -2,11 +2,19 @@ type StatCardProps = {
   label: string
   value: string
   change?: string
+  tint: 'green' | 'blue' | 'orange' | 'purple'
 }
 
-function StatCard({ label, value, change }: StatCardProps) {
+const tintStyles: Record<StatCardProps['tint'], string> = {
+  green: 'bg-green-50/60 hover:bg-green-50',
+  blue: 'bg-blue-50/60 hover:bg-blue-50',
+  orange: 'bg-orange-50/60 hover:bg-orange-50',
+  purple: 'bg-purple-50/60 hover:bg-purple-50',
+}
+
+function StatCard({ label, value, change, tint }: StatCardProps) {
   return (
-    <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-[0_1px_3px_rgba(0,0,0,0.04)]">
+    <div className={`rounded-xl border border-slate-200/80 p-4 shadow-[0_1px_3px_rgba(0,0,0,0.04)] transition-all duration-200 hover:shadow-md hover:-translate-y-0.5 ${tintStyles[tint]}`}>
       <p className="text-xs font-medium text-slate-500">{label}</p>
       <p className="mt-1 text-2xl font-bold text-slate-900">{value}</p>
       {change && (
@@ -28,10 +36,10 @@ type StatsBarProps = {
 export function StatsBar({ goalProgress, checkinRate, streakDays, insightCount }: StatsBarProps) {
   return (
     <div className="mb-8 grid grid-cols-2 gap-4 md:grid-cols-4">
-      <StatCard label="目标进度" value={`${goalProgress}%`} change="+12%" />
-      <StatCard label="打卡率" value={`${checkinRate}%`} change="+5%" />
-      <StatCard label="连续天数" value={streakDays.toString()} change="最佳记录" />
-      <StatCard label="洞察" value={insightCount.toString()} change="1 条新" />
+      <StatCard label="目标进度" value={`${goalProgress}%`} change="+12%" tint="green" />
+      <StatCard label="打卡率" value={`${checkinRate}%`} change="+5%" tint="blue" />
+      <StatCard label="连续天数" value={streakDays.toString()} change="最佳记录" tint="orange" />
+      <StatCard label="洞察" value={insightCount.toString()} change="1 条新" tint="purple" />
     </div>
   )
 }
