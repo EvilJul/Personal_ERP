@@ -69,7 +69,7 @@ export async function POST(request: Request, { params }: RouteParams) {
     return NextResponse.json({ entry, action: 'checked' }, { status: 201 })
   } catch (error) {
     return NextResponse.json(
-      { error: 'Internal server error', code: 'INTERNAL_ERROR' },
+      { error: '服务器内部错误', code: 'INTERNAL_ERROR' },
       { status: 500 }
     )
   }

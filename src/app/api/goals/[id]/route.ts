@@ -13,6 +13,9 @@ const UpdateGoalSchema = z.object({
   targetValue: z.number().positive().optional(),
   unit: z.string().optional(),
   deadline: z.string().optional(),
+  linkedModules: z.array(z.string()).optional().transform(
+    (val) => val ? JSON.stringify(val) : undefined
+  ),
 })
 
 type RouteParams = { params: Promise<{ id: string }> }

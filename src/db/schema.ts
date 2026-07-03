@@ -1,4 +1,4 @@
-import { sqliteTable, text, integer, real, unique } from 'drizzle-orm/sqlite-core'
+import { sqliteTable, text, integer, real, unique, index } from 'drizzle-orm/sqlite-core'
 import { sql } from 'drizzle-orm'
 import { nanoid } from 'nanoid'
 
@@ -46,6 +46,7 @@ export const habitEntries = sqliteTable('habit_entries', {
   createdAt: integer('created_at', { mode: 'timestamp' }).notNull().default(sql`(unixepoch())`),
 }, (table) => [
   unique('habit_entries_habit_id_date_unique').on(table.habitId, table.date),
+  index('habit_date_idx').on(table.habitId, table.date),
 ])
 
 // ====== connection_rules ======
@@ -109,4 +110,7 @@ export const transactions = sqliteTable('transactions', {
   category: text('category'),
   syncId: text('sync_id'), // Actual Budget 的 transaction ID
   createdAt: integer('created_at', { mode: 'timestamp' }).notNull().default(sql`(unixepoch())`),
-})
+}, (table) => [
+  index('transaction_date_idx').on(table.date),
+  index('transaction_account_idx').on(table.accountId),
+])
