@@ -179,7 +179,60 @@ export default async function DashboardPage() {
 
   return (
     <main className="min-h-screen pb-20 md:pb-4 animate-fade-in-up bg-gradient-to-br from-slate-50 via-white to-slate-50">
-      <div className="mx-auto max-w-5xl px-4 py-4 md:px-6 md:py-6 space-y-4">
+      {/* 漂浮像素装饰层 */}
+      <div className="pointer-events-none fixed inset-0 overflow-hidden" aria-hidden="true">
+        {/* 左上角 - 绿色靶心 */}
+        <div className="absolute -top-20 -left-20 opacity-10 float-slow">
+          <svg width="120" height="120" viewBox="0 0 16 16">
+            <rect x="4" y="4" width="8" height="8" fill="#22c55e" />
+            <rect x="5" y="5" width="6" height="6" fill="white" />
+            <rect x="6" y="6" width="4" height="4" fill="#22c55e" />
+          </svg>
+        </div>
+
+        {/* 右上角 - 蓝色勾选 */}
+        <div className="absolute -top-10 -right-10 opacity-10 float-medium">
+          <svg width="100" height="100" viewBox="0 0 16 16">
+            <rect x="2" y="2" width="12" height="12" rx="2" stroke="#3b82f6" strokeWidth="2" fill="none" />
+            <rect x="4" y="7" width="2" height="4" fill="#3b82f6" />
+            <rect x="6" y="9" width="2" height="2" fill="#3b82f6" />
+            <rect x="8" y="7" width="2" height="2" fill="#3b82f6" />
+            <rect x="10" y="5" width="2" height="2" fill="#3b82f6" />
+          </svg>
+        </div>
+
+        {/* 左下角 - 橙色火焰 */}
+        <div className="absolute -bottom-20 -left-10 opacity-10 float-slow-alt">
+          <svg width="80" height="80" viewBox="0 0 16 16">
+            <rect x="6" y="2" width="4" height="2" fill="#ff9800" />
+            <rect x="4" y="4" width="8" height="2" fill="#ff9800" />
+            <rect x="4" y="6" width="8" height="2" fill="#ff5722" />
+            <rect x="6" y="8" width="4" height="2" fill="#ff5722" />
+            <rect x="6" y="10" width="4" height="4" fill="#e65100" />
+          </svg>
+        </div>
+
+        {/* 右下角 - 紫色灯泡 */}
+        <div className="absolute -bottom-10 -right-20 opacity-10 float-medium">
+          <svg width="90" height="90" viewBox="0 0 16 16">
+            <rect x="6" y="2" width="4" height="2" fill="#9c27b0" />
+            <rect x="4" y="4" width="8" height="2" fill="#9c27b0" />
+            <rect x="4" y="6" width="8" height="2" fill="#9c27b0" />
+            <rect x="6" y="8" width="4" height="2" fill="white" />
+            <rect x="6" y="10" width="4" height="2" fill="#757575" />
+            <rect x="4" y="12" width="8" height="2" fill="#757575" />
+          </svg>
+        </div>
+
+        {/* 顶部中央 - 渐变光晕 */}
+        <div className="absolute -top-32 left-1/2 -translate-x-1/2 w-[28rem] h-[28rem] rounded-full glow-pulse"
+          style={{
+            background: 'radial-gradient(circle, rgba(34,197,94,0.12) 0%, rgba(34,197,94,0.04) 40%, transparent 70%)',
+          }}
+        />
+      </div>
+
+      <div className="relative mx-auto max-w-5xl px-4 py-4 md:px-6 md:py-6 space-y-4">
         {/* 统计卡片栏 + 成就图标 */}
         <StatsBar
           goalProgress={avgGoalProgress}

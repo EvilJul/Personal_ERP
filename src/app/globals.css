@@ -280,3 +280,38 @@
     inset 0 1px 0 rgba(255, 255, 255, 0.8),
     0 1px 3px rgba(0, 0, 0, 0.04);
 }
+
+/* ===== 漂浮背景装饰 ===== */
+
+@keyframes float {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-10px) rotate(5deg); }
+}
+
+@keyframes floatReverse {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(8px) rotate(-3deg); }
+}
+
+@keyframes pulse-glow {
+  0%, 100% { opacity: 0.15; transform: scale(1); }
+  50% { opacity: 0.25; transform: scale(1.05); }
+}
+
+.float-slow {
+  animation: float 8s ease-in-out infinite;
+}
+
+.float-medium {
+  animation: floatReverse 6s ease-in-out infinite;
+  animation-delay: 2s;
+}
+
+.float-slow-alt {
+  animation: float 10s ease-in-out infinite;
+  animation-delay: 4s;
+}
+
+.glow-pulse {
+  animation: pulse-glow 6s ease-in-out infinite;
+}
