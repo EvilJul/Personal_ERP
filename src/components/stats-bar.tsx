@@ -49,11 +49,11 @@ export function StatsBar({ goalProgress, checkinRate, streakDays, insightCount, 
     <div className="mb-4 flex items-center gap-3">
       {/* 5 个统计卡片，等分宽度 */}
       <div className="grid flex-1 grid-cols-5 gap-3">
-        <StatCard label="目标进度" value={`${goalProgress}%`} icon="🎯" color="green" />
-        <StatCard label="打卡率" value={`${checkinRate}%`} icon="📊" color="blue" />
-        <StatCard label="连续天数" value={streakDays.toString()} icon="🔥" color="orange" />
-        <StatCard label="洞察" value={insightCount.toString()} icon="💡" color="purple" />
-        <StatCard label="成就" value={unlockedBadges.length.toString()} icon="🏆" color="amber" />
+        <StatCard label="目标进度" value={`${goalProgress}%`} icon="◎" color="green" />
+        <StatCard label="打卡率" value={`${checkinRate}%`} icon="◉" color="blue" />
+        <StatCard label="连续天数" value={streakDays.toString()} icon="▲" color="orange" />
+        <StatCard label="洞察" value={insightCount.toString()} icon="◆" color="purple" />
+        <StatCard label="成就" value={unlockedBadges.length.toString()} icon="★" color="amber" />
       </div>
 
       {/* 最近解锁徽章小图标 */}
