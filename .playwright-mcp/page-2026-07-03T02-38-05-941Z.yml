@@ -1,0 +1,105 @@
+- generic [active] [ref=e1]:
+  - main [ref=e21]:
+    - generic [ref=e22]:
+      - generic [ref=e23]:
+        - heading "Personal ERP" [level=1] [ref=e24]
+        - paragraph [ref=e25]: 你的个人生活管理系统
+      - generic [ref=e26]:
+        - heading "洞察" [level=2] [ref=e28]
+        - generic [ref=e29]:
+          - img [ref=e30]: 💡
+          - heading "暂无洞察" [level=3] [ref=e31]
+          - paragraph [ref=e32]: 先添加目标和习惯，系统会为你生成跨模块的洞察分析
+      - generic [ref=e33]:
+        - generic [ref=e34]:
+          - generic [ref=e35]:
+            - heading "目标" [level=2] [ref=e36]
+            - button "查看全部" [ref=e37] [cursor=pointer]
+          - generic [ref=e38]:
+            - generic [ref=e39]:
+              - heading "储蓄目标" [level=4] [ref=e41]
+              - progressbar "3500 元 / 10000 元" [ref=e43]:
+                - text: 3500 元 / 10000 元
+                - generic [ref=e44]: 35%
+                - text: x
+              - generic [ref=e47]:
+                - link "编辑" [ref=e48] [cursor=pointer]:
+                  - /url: /goals/45y5vWo49zJ_Vi4UvseGi/edit
+                  - button "编辑" [ref=e49]
+                - button "删除" [ref=e50]
+            - generic [ref=e51]:
+              - heading "健康目标" [level=4] [ref=e53]
+              - progressbar "5 kg / 30 kg" [ref=e55]:
+                - text: 5 kg / 30 kg
+                - generic [ref=e56]: 17%
+                - text: x
+              - generic [ref=e59]:
+                - link "编辑" [ref=e60] [cursor=pointer]:
+                  - /url: /goals/Wa6XpsZIJkLhth5kszz3g/edit
+                  - button "编辑" [ref=e61]
+                - button "删除" [ref=e62]
+            - generic [ref=e63]:
+              - heading "学习目标" [level=4] [ref=e65]
+              - progressbar "3 本 / 12 本" [ref=e67]:
+                - text: 3 本 / 12 本
+                - generic [ref=e68]: 25%
+                - text: x
+              - generic [ref=e71]:
+                - link "编辑" [ref=e72] [cursor=pointer]:
+                  - /url: /goals/MITSNU0BTPKXFW-bvzKz4/edit
+                  - button "编辑" [ref=e73]
+                - button "删除" [ref=e74]
+        - generic [ref=e75]:
+          - generic [ref=e76]:
+            - heading "习惯" [level=2] [ref=e77]
+            - button "查看全部" [ref=e78] [cursor=pointer]
+          - generic [ref=e79]:
+            - generic [ref=e80]:
+              - generic [ref=e81]:
+                - generic [ref=e82]:
+                  - heading "运动" [level=4] [ref=e83]
+                  - generic [ref=e84]:
+                    - generic [ref=e85]: 连续 6 天
+                    - generic [ref=e86]: 每天
+                - generic [ref=e87]:
+                  - link "编辑习惯" [ref=e88] [cursor=pointer]:
+                    - /url: /habits/MfIC8b0eYTFkqPV-YPRz9/edit
+                    - text: 编辑
+                  - button "打卡" [ref=e89]:
+                    - img [ref=e90]
+              - generic [ref=e92]:
+                - img [ref=e93]
+                - generic [ref=e95]: 近 7 天
+            - generic [ref=e96]:
+              - generic [ref=e97]:
+                - generic [ref=e98]:
+                  - heading "阅读" [level=4] [ref=e99]
+                  - generic [ref=e101]: 每天
+                - generic [ref=e102]:
+                  - link "编辑习惯" [ref=e103] [cursor=pointer]:
+                    - /url: /habits/gADGSWke_UDRDX3W8vY_B/edit
+                    - text: 编辑
+                  - button "打卡" [ref=e104]:
+                    - img [ref=e105]
+              - generic [ref=e107]:
+                - img [ref=e108]
+                - generic [ref=e110]: 近 7 天
+            - generic [ref=e111]:
+              - generic [ref=e112]:
+                - generic [ref=e113]:
+                  - heading "冥想" [level=4] [ref=e114]
+                  - generic [ref=e115]:
+                    - generic [ref=e116]: 连续 2 天
+                    - generic [ref=e117]: 每天
+                - generic [ref=e118]:
+                  - link "编辑习惯" [ref=e119] [cursor=pointer]:
+                    - /url: /habits/410u3KnXuCPVsNgEsi6hp/edit
+                    - text: 编辑
+                  - button "打卡" [ref=e120]:
+                    - img [ref=e121]
+              - generic [ref=e123]:
+                - img [ref=e124]
+                - generic [ref=e126]: 近 7 天
+  - button "Open Next.js Dev Tools" [ref=e16] [cursor=pointer]:
+    - img [ref=e17]
+  - alert [ref=e20]

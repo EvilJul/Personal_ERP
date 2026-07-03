@@ -1,0 +1,105 @@
+- generic [active] [ref=f3e1]:
+  - main [ref=f3e2]:
+    - generic [ref=f3e3]:
+      - generic [ref=f3e4]:
+        - heading "Personal ERP" [level=1] [ref=f3e5]
+        - paragraph [ref=f3e6]: 你的个人生活管理系统
+      - generic [ref=f3e7]:
+        - heading "洞察" [level=2] [ref=f3e9]
+        - generic [ref=f3e10]:
+          - img [ref=f3e11]: 💡
+          - heading "暂无洞察" [level=3] [ref=f3e12]
+          - paragraph [ref=f3e13]: 先添加目标和习惯，系统会为你生成跨模块的洞察分析
+      - generic [ref=f3e14]:
+        - generic [ref=f3e15]:
+          - generic [ref=f3e16]:
+            - heading "目标" [level=2] [ref=f3e17]
+            - button "查看全部" [ref=f3e18] [cursor=pointer]
+          - generic [ref=f3e19]:
+            - generic [ref=f3e20]:
+              - heading "储蓄目标" [level=4] [ref=f3e22]
+              - progressbar "3500 元 / 10000 元" [ref=f3e24]:
+                - text: 3500 元 / 10000 元
+                - generic [ref=f3e25]: 35%
+                - text: x
+              - generic [ref=f3e28]:
+                - link "编辑" [ref=f3e29] [cursor=pointer]:
+                  - /url: /goals/45y5vWo49zJ_Vi4UvseGi/edit
+                  - button "编辑" [ref=f3e30]
+                - button "删除" [ref=f3e31]
+            - generic [ref=f3e32]:
+              - heading "健康目标" [level=4] [ref=f3e34]
+              - progressbar "5 kg / 30 kg" [ref=f3e36]:
+                - text: 5 kg / 30 kg
+                - generic [ref=f3e37]: 17%
+                - text: x
+              - generic [ref=f3e40]:
+                - link "编辑" [ref=f3e41] [cursor=pointer]:
+                  - /url: /goals/Wa6XpsZIJkLhth5kszz3g/edit
+                  - button "编辑" [ref=f3e42]
+                - button "删除" [ref=f3e43]
+            - generic [ref=f3e44]:
+              - heading "学习目标" [level=4] [ref=f3e46]
+              - progressbar "3 本 / 12 本" [ref=f3e48]:
+                - text: 3 本 / 12 本
+                - generic [ref=f3e49]: 25%
+                - text: x
+              - generic [ref=f3e52]:
+                - link "编辑" [ref=f3e53] [cursor=pointer]:
+                  - /url: /goals/MITSNU0BTPKXFW-bvzKz4/edit
+                  - button "编辑" [ref=f3e54]
+                - button "删除" [ref=f3e55]
+        - generic [ref=f3e56]:
+          - generic [ref=f3e57]:
+            - heading "习惯" [level=2] [ref=f3e58]
+            - button "查看全部" [ref=f3e59] [cursor=pointer]
+          - generic [ref=f3e60]:
+            - generic [ref=f3e61]:
+              - generic [ref=f3e62]:
+                - generic [ref=f3e63]:
+                  - heading "运动" [level=4] [ref=f3e64]
+                  - generic [ref=f3e65]:
+                    - generic [ref=f3e66]: 连续 6 天
+                    - generic [ref=f3e67]: 每天
+                - generic [ref=f3e68]:
+                  - link "编辑习惯" [ref=f3e69] [cursor=pointer]:
+                    - /url: /habits/MfIC8b0eYTFkqPV-YPRz9/edit
+                    - text: 编辑
+                  - button "打卡" [ref=f3e70]:
+                    - img [ref=f3e71]
+              - generic [ref=f3e73]:
+                - img [ref=f3e74]
+                - generic [ref=f3e76]: 近 7 天
+            - generic [ref=f3e77]:
+              - generic [ref=f3e78]:
+                - generic [ref=f3e79]:
+                  - heading "阅读" [level=4] [ref=f3e80]
+                  - generic [ref=f3e82]: 每天
+                - generic [ref=f3e83]:
+                  - link "编辑习惯" [ref=f3e84] [cursor=pointer]:
+                    - /url: /habits/gADGSWke_UDRDX3W8vY_B/edit
+                    - text: 编辑
+                  - button "打卡" [ref=f3e85]:
+                    - img [ref=f3e86]
+              - generic [ref=f3e88]:
+                - img [ref=f3e89]
+                - generic [ref=f3e91]: 近 7 天
+            - generic [ref=f3e92]:
+              - generic [ref=f3e93]:
+                - generic [ref=f3e94]:
+                  - heading "冥想" [level=4] [ref=f3e95]
+                  - generic [ref=f3e96]:
+                    - generic [ref=f3e97]: 连续 2 天
+                    - generic [ref=f3e98]: 每天
+                - generic [ref=f3e99]:
+                  - link "编辑习惯" [ref=f3e100] [cursor=pointer]:
+                    - /url: /habits/410u3KnXuCPVsNgEsi6hp/edit
+                    - text: 编辑
+                  - button "打卡" [ref=f3e101]:
+                    - img [ref=f3e102]
+              - generic [ref=f3e104]:
+                - img [ref=f3e105]
+                - generic [ref=f3e107]: 近 7 天
+  - button "Open Next.js Dev Tools" [ref=f3e113] [cursor=pointer]:
+    - img [ref=f3e114]
+  - alert [ref=f3e117]

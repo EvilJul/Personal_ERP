@@ -1,0 +1,10 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e3]:
+    - generic [ref=e4]:
+      - heading "Personal ERP" [level=1] [ref=e5]
+      - paragraph [ref=e6]: 输入密码以访问系统
+    - generic [ref=e7]:
+      - textbox "请输入密码" [ref=e9]
+      - button "登录" [ref=e10]
+  - button "Open Next.js Dev Tools" [ref=e16] [cursor=pointer]:
+    - img [ref=e17]

@@ -1,0 +1,13 @@
+- generic [active] [ref=e1]:
+  - main [ref=e127]:
+    - generic [ref=e128]:
+      - link "← 返回目标列表" [ref=e130] [cursor=pointer]:
+        - /url: /goals
+      - heading "编辑目标" [level=1] [ref=e131]
+      - generic [ref=e133]:
+        - paragraph [ref=e134]: 目标不存在
+        - link "返回目标列表" [ref=e135] [cursor=pointer]:
+          - /url: /goals
+  - button "Open Next.js Dev Tools" [ref=e16] [cursor=pointer]:
+    - img [ref=e17]
+  - alert [ref=e20]
