@@ -14,7 +14,7 @@ const tintStyles: Record<StatCardProps['tint'], string> = {
 
 function StatCard({ label, value, change, tint }: StatCardProps) {
   return (
-    <div className={`rounded-xl border border-slate-200/80 p-4 shadow-[0_1px_3px_rgba(0,0,0,0.04)] transition-all duration-200 hover:shadow-md hover:-translate-y-0.5 ${tintStyles[tint]}`}>
+    <div className={`stagger-item card-hover rounded-xl border border-slate-200/80 p-4 shadow-[0_1px_3px_rgba(0,0,0,0.04)] ${tintStyles[tint]}`}>
       <p className="text-xs font-medium text-slate-500">{label}</p>
       <p className="mt-1 text-2xl font-bold text-slate-900">{value}</p>
       {change && (

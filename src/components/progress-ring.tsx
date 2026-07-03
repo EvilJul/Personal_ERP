@@ -1,3 +1,7 @@
+'use client'
+
+import { useEffect, useState } from 'react'
+
 type ProgressRingProps = {
   percentage: number
   size?: number
@@ -6,9 +10,19 @@ type ProgressRingProps = {
 }
 
 export function ProgressRing({ percentage, size = 48, strokeWidth = 4, className }: ProgressRingProps) {
+  const [animatedPercent, setAnimatedPercent] = useState(0)
   const radius = (size - strokeWidth) / 2
   const circumference = radius * 2 * Math.PI
-  const offset = circumference - (percentage / 100) * circumference
+
+  useEffect(() => {
+    // 触发从 0 到目标值的动画
+    const timer = requestAnimationFrame(() => {
+      setAnimatedPercent(percentage)
+    })
+    return () => cancelAnimationFrame(timer)
+  }, [percentage])
+
+  const offset = circumference - (animatedPercent / 100) * circumference
 
   return (
     <div className={className} style={{ width: size, height: size }}>
@@ -31,7 +45,7 @@ export function ProgressRing({ percentage, size = 48, strokeWidth = 4, className
           strokeDasharray={circumference}
           strokeDashoffset={offset}
           strokeLinecap="round"
-          className="transition-all duration-600"
+          className="transition-all duration-600 ease-out"
         />
       </svg>
       <span className="absolute inset-0 flex items-center justify-center text-xs font-bold text-slate-900">

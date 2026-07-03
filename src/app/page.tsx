@@ -112,8 +112,9 @@ export default async function DashboardPage() {
     entriesByHabitId.set(entry.habitId, list)
   }
 
-  // 计算习惯的展示字段 + 趋势
-  const habits = rawHabits.map(habit => {
+  // 计算习惯的展示字段 + 趋势 + 打卡率
+  const habits = rawHabits
+    .map(habit => {
     const entries = entriesByHabitId.get(habit.id) || []
 
     const completedDates = new Set(
@@ -124,6 +125,9 @@ export default async function DashboardPage() {
     const streak = computeHabitStreak(completedDates)
     const completionTrend = computeHabitCompletionTrend(completedDates)
 
+    // 打卡率 = 近 7 天完成天数 / 7
+    const checkinRate = recentDays.filter(Boolean).length / recentDays.length
+
     return {
       id: habit.id,
       title: habit.title,
@@ -132,14 +136,19 @@ export default async function DashboardPage() {
       completedToday: recentDays[recentDays.length - 1] ?? false,
       recentDays,
       completionTrend,
+      checkinRate,
     }
   })
+  .sort((a, b) => b.checkinRate - a.checkinRate)
 
-  // 计算目标趋势数据
-  const goalsWithTrend = goals.map(goal => ({
-    ...goal,
-    trend: computeGoalTrend(goal.id),
-  }))
+  // 计算目标趋势数据 + 排序（按进度百分比降序）
+  const goalsWithTrend = goals
+    .map(goal => ({
+      ...goal,
+      trend: computeGoalTrend(goal.id),
+      progressPercent: goal.targetValue > 0 ? Math.min((goal.currentValue / goal.targetValue) * 100, 100) : 0,
+    }))
+    .sort((a, b) => b.progressPercent - a.progressPercent)
 
   // 映射洞察的 source 字段
   const insights = rawInsights.map(insight => ({
@@ -162,7 +171,7 @@ export default async function DashboardPage() {
   const maxStreak = habits.reduce((max, h) => Math.max(max, h.streak), 0)
 
   return (
-    <main className="min-h-screen pb-20 md:pb-8" style={{ background: 'linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%)' }}>
+    <main className="min-h-screen pb-20 md:pb-8 animate-fade-in-up" style={{ background: 'linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%)' }}>
       <div className="mx-auto max-w-6xl px-4 py-6 md:px-6 md:py-8">
         {/* 统计卡片栏 */}
         <StatsBar
@@ -181,8 +190,8 @@ export default async function DashboardPage() {
 
         {/* Goals + Habits 双栏（5:3 比例） */}
         <div className="grid grid-cols-1 gap-6 md:gap-8 lg:grid-cols-[5fr_3fr]">
-          <GoalsSection goals={goalsWithTrend} />
-          <HabitsSection habits={habits} />
+          <GoalsSection goals={goalsWithTrend} total={goals.length} />
+          <HabitsSection habits={habits} total={rawHabits.length} />
         </div>
       </div>
     </main>

@@ -31,7 +31,7 @@ export function InsightCard({ message, severity, source, isFirst, className }: I
   return (
     <div
       className={cn(
-        'rounded-xl border border-l-[3px] p-4 shadow-[0_1px_3px_rgba(0,0,0,0.04)] transition-all duration-200 hover:shadow-md hover:-translate-y-0.5',
+        'card-hover rounded-xl border border-l-[3px] p-4 shadow-[0_1px_3px_rgba(0,0,0,0.04)]',
         'border-slate-200',
         severityBorder[severity],
         severityBg[severity],

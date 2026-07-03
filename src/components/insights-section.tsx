@@ -16,7 +16,7 @@ type InsightsSectionProps = {
 
 export function InsightsSection({ insights, className }: InsightsSectionProps) {
   return (
-    <section className={cn('w-full', className)}>
+    <section className={cn('w-full animate-fade-in-up', className)}>
       <div className="mb-4 flex items-center justify-between">
         <h2 className="text-lg font-semibold text-slate-900">洞察</h2>
       </div>
@@ -30,13 +30,14 @@ export function InsightsSection({ insights, className }: InsightsSectionProps) {
       ) : (
         <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
           {insights.map((insight, index) => (
-            <InsightCard
-              key={insight.id}
-              message={insight.message}
-              severity={insight.severity}
-              source={insight.source}
-              isFirst={index === 0}
-            />
+            <div key={insight.id} className="stagger-item">
+              <InsightCard
+                message={insight.message}
+                severity={insight.severity}
+                source={insight.source}
+                isFirst={index === 0}
+              />
+            </div>
           ))}
         </div>
       )}

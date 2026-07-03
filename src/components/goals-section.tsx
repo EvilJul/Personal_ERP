@@ -11,12 +11,19 @@ type GoalWithTrend = Goal & {
 
 type GoalsSectionProps = {
   goals: GoalWithTrend[]
+  /** 数据库中的总目标数量（goals 可能已被截断） */
+  total?: number
   className?: string
 }
 
-export function GoalsSection({ goals, className }: GoalsSectionProps) {
+const DASHBOARD_LIMIT = 5
+
+export function GoalsSection({ goals, total, className }: GoalsSectionProps) {
+  const displayGoals = goals.slice(0, DASHBOARD_LIMIT)
+  const remaining = (total ?? goals.length) - DASHBOARD_LIMIT
+
   return (
-    <section className={cn('w-full', className)}>
+    <section className={cn('w-full animate-fade-in-up', className)}>
       <div className="mb-4 flex items-center justify-between">
         <h2 className="text-lg font-semibold text-slate-900">目标</h2>
         <Button variant="ghost" size="sm" render={<Link href="/goals" />} nativeButton={false}>
@@ -24,7 +31,7 @@ export function GoalsSection({ goals, className }: GoalsSectionProps) {
         </Button>
       </div>
 
-      {goals.length === 0 ? (
+      {displayGoals.length === 0 ? (
         <EmptyState
           icon="🎯"
           title="开始追踪你的第一个目标"
@@ -37,18 +44,28 @@ export function GoalsSection({ goals, className }: GoalsSectionProps) {
         />
       ) : (
         <div className="space-y-3">
-          {goals.slice(0, 3).map((goal) => (
-            <GoalCard
-              key={goal.id}
-              id={goal.id}
-              title={goal.title}
-              currentValue={goal.currentValue}
-              targetValue={goal.targetValue}
-              unit={goal.unit ?? undefined}
-              deadline={goal.deadline ?? undefined}
-              trend={goal.trend}
-            />
+          {displayGoals.map((goal) => (
+            <div key={goal.id} className="stagger-item">
+              <GoalCard
+                id={goal.id}
+                title={goal.title}
+                currentValue={goal.currentValue}
+                targetValue={goal.targetValue}
+                unit={goal.unit ?? undefined}
+                deadline={goal.deadline ?? undefined}
+                trend={goal.trend}
+                className="card-hover"
+              />
+            </div>
           ))}
+          {remaining > 0 && (
+            <Link
+              href="/goals"
+              className="block rounded-lg py-2 text-center text-sm font-medium text-slate-500 transition-colors hover:bg-slate-50 hover:text-slate-700 link-underline"
+            >
+              +{remaining} 个更多
+            </Link>
+          )}
         </div>
       )}
     </section>
