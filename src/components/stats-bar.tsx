@@ -144,6 +144,18 @@ export function StatsBar({ goalProgress, checkinRate, streakDays, insightCount, 
           <span className="ml-1 text-xs text-slate-400">&rarr;</span>
         </Link>
       )}
+
+      {/* 设置入口 */}
+      <Link
+        href="/settings"
+        className="flex shrink-0 items-center justify-center size-10 rounded-xl border border-slate-200/80 bg-white/60 shadow-[0_1px_3px_rgba(0,0,0,0.04)] transition-colors hover:bg-slate-50"
+        title="设置"
+      >
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+          <rect x="3" y="3" width="10" height="10" rx="2" stroke="#64748b" strokeWidth="1.5" fill="none"/>
+          <rect x="6" y="6" width="4" height="4" fill="#64748b"/>
+        </svg>
+      </Link>
     </div>
   )
 }

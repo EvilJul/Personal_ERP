@@ -276,17 +276,6 @@ export default async function DashboardPage() {
         {/* 洞察区域 */}
         <InsightsSection insights={insights} />
 
-        {/* 快速操作 */}
-        <div className="flex items-center gap-2">
-          <span className="text-xs font-medium text-slate-500 mr-1">快捷操作</span>
-          <a href="/goals" className="inline-flex items-center gap-1.5 rounded-lg border border-slate-200/80 bg-white/60 px-3 py-1.5 text-xs font-medium text-slate-600 shadow-[0_1px_2px_rgba(0,0,0,0.04)] transition-colors hover:bg-slate-50">
-            🎯 新建目标
-          </a>
-          <a href="/habits" className="inline-flex items-center gap-1.5 rounded-lg border border-slate-200/80 bg-white/60 px-3 py-1.5 text-xs font-medium text-slate-600 shadow-[0_1px_2px_rgba(0,0,0,0.04)] transition-colors hover:bg-slate-50">
-            ✅ 新建习惯
-          </a>
-        </div>
-
         {/* 渐变分隔线 */}
         <div className="h-px bg-gradient-to-r from-transparent via-slate-200 to-transparent" />
 
