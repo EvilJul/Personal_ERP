@@ -6,17 +6,16 @@ const STORAGE_KEY = 'bg-pattern'
 
 /**
  * 背景图案应用组件
- * 从 localStorage 读取用户选择的背景图案，应用到 html 元素的 data 属性
- * 使用 data 属性而非 body class，避免被 React 重渲染覆盖
+ * 在 body 开头插入一个全屏背景层，避免 CSS 层级问题
  */
 export function BackgroundApplier() {
   useEffect(() => {
     const saved = localStorage.getItem(STORAGE_KEY) || 'none'
-    document.body.setAttribute('data-bg-pattern', saved)
+    applyBackground(saved)
 
     const handleStorage = (e: StorageEvent) => {
       if (e.key === STORAGE_KEY) {
-        document.body.setAttribute('data-bg-pattern', e.newValue || 'none')
+        applyBackground(e.newValue || 'none')
       }
     }
     window.addEventListener('storage', handleStorage)
@@ -26,12 +25,32 @@ export function BackgroundApplier() {
   return null
 }
 
+function applyBackground(pattern: string) {
+  // 移除旧的背景层
+  const existing = document.getElementById('bg-pattern-layer')
+  if (existing) existing.remove()
+
+  if (pattern === 'none') return
+
+  // 创建新的背景层
+  const layer = document.createElement('div')
+  layer.id = 'bg-pattern-layer'
+  layer.style.cssText = `
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+  `
+  layer.className = `bg-pattern-${pattern}`
+  document.body.prepend(layer)
+}
+
 /**
  * 应用背景图案（供设置页面使用）
  */
 export function applyBackgroundPattern(pattern: string) {
   localStorage.setItem(STORAGE_KEY, pattern)
-  document.body.setAttribute('data-bg-pattern', pattern)
+  applyBackground(pattern)
 }
 
 /**

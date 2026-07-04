@@ -3,8 +3,9 @@
   "configurations": [
     {
       "name": "personal-erp-dev",
-      "runtimeExecutable": "npm",
-      "runtimeArgs": ["run", "dev"],
+      "runtimeExecutable": "node",
+      "runtimeArgs": ["node_modules/.bin/next", "dev"],
+      "cwd": "/Users/fusheng/Documents/AIProjects/Personal_ERP",
       "port": 3000
     },
     {
