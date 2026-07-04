@@ -12,11 +12,11 @@ const STORAGE_KEY = 'bg-pattern'
 export function BackgroundApplier() {
   useEffect(() => {
     const saved = localStorage.getItem(STORAGE_KEY) || 'none'
-    document.documentElement.setAttribute('data-bg-pattern', saved)
+    document.body.setAttribute('data-bg-pattern', saved)
 
     const handleStorage = (e: StorageEvent) => {
       if (e.key === STORAGE_KEY) {
-        document.documentElement.setAttribute('data-bg-pattern', e.newValue || 'none')
+        document.body.setAttribute('data-bg-pattern', e.newValue || 'none')
       }
     }
     window.addEventListener('storage', handleStorage)
@@ -31,7 +31,7 @@ export function BackgroundApplier() {
  */
 export function applyBackgroundPattern(pattern: string) {
   localStorage.setItem(STORAGE_KEY, pattern)
-  document.documentElement.setAttribute('data-bg-pattern', pattern)
+  document.body.setAttribute('data-bg-pattern', pattern)
 }
 
 /**
