@@ -4,6 +4,6 @@
     <color name="colorPrimaryDark">#16a34a</color>
     <color name="colorAccent">#3b82f6</color>
     <color name="splashscreen_background">#ffffff</color>
-</resources>
     <color name="ic_launcher_background">#22c55e</color>
     <color name="ic_launcher_foreground">#ffffff</color>
+</resources>
