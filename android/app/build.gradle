@@ -46,4 +46,4 @@ dependencies {
 }
 
 // Capacitor 从 node_modules 同步
-apply from: '../node_modules/@capacitor/android/capacitor/build.gradle'
+apply from: "${rootProject.projectDir}/../node_modules/@capacitor/android/capacitor/build.gradle"
