@@ -43,3 +43,10 @@ next-env.d.ts
 /drizzle/
 .env
 .playwright-mcp/
+
+# Capacitor
+/android/
+/ios/
+*.apk
+*.aab
+.cap-build-tmp/

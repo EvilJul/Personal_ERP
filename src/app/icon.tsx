@@ -1,3 +1,5 @@
+export const dynamic = 'force-static'
+
 export default function Icon() {
   return new Response(
     `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">

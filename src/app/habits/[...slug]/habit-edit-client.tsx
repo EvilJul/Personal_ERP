@@ -12,16 +12,25 @@ type Habit = {
   linkedGoalId?: string | null
 }
 
-export default function EditHabitPage() {
-  const { id } = useParams<{ id: string }>()
+export function HabitEditClient() {
+  const params = useParams<{ slug?: string[] }>()
   const [habit, setHabit] = useState<Habit | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
+  const slug = params.slug ?? []
+  const habitId = slug.length >= 2 && slug[1] === 'edit' ? slug[0] : null
+
   useEffect(() => {
+    if (!habitId) {
+      setError('无效的习惯 ID')
+      setLoading(false)
+      return
+    }
+
     async function loadHabit() {
       try {
-        const res = await fetch(`/api/habits/${id}`)
+        const res = await fetch(`/api/habits/${habitId}`)
         if (!res.ok) {
           if (res.status === 404) {
             setError('习惯不存在')
@@ -38,23 +47,30 @@ export default function EditHabitPage() {
       }
     }
     loadHabit()
-  }, [id])
+  }, [habitId])
+
+  if (!habitId) {
+    return (
+      <main className="min-h-screen bg-slate-50 pb-20 md:pb-8">
+        <div className="mx-auto max-w-3xl px-4 py-6 md:px-6 md:py-8">
+          <p className="text-sm text-red-500">无效的 URL</p>
+          <Link href="/habits" className="mt-2 inline-block text-sm text-slate-500 hover:text-slate-700">
+            返回习惯列表
+          </Link>
+        </div>
+      </main>
+    )
+  }
 
   return (
     <main className="min-h-screen bg-slate-50 pb-20 md:pb-8">
       <div className="mx-auto max-w-3xl px-4 py-6 md:px-6 md:py-8">
-        {/* 页面头部 */}
         <header className="mb-6">
-          <Link
-            href="/habits"
-            className="text-sm text-slate-500 transition-colors hover:text-slate-700"
-          >
-            ← 返回习惯列表
+          <Link href="/habits" className="text-sm text-slate-500 transition-colors hover:text-slate-700">
+            &larr; 返回习惯列表
           </Link>
           <h1 className="mt-3 text-2xl font-semibold text-slate-900">编辑习惯</h1>
-          <p className="mt-1 text-sm text-slate-500">
-            修改习惯信息
-          </p>
+          <p className="mt-1 text-sm text-slate-500">修改习惯信息</p>
         </header>
 
         {loading && (
@@ -63,9 +79,7 @@ export default function EditHabitPage() {
           </div>
         )}
 
-        {error && (
-          <p className="py-8 text-center text-sm text-red-500">{error}</p>
-        )}
+        {error && <p className="py-8 text-center text-sm text-red-500">{error}</p>}
 
         {habit && <HabitForm initialData={habit} />}
       </div>
