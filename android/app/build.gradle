@@ -40,17 +40,10 @@ dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation "androidx.appcompat:appcompat:$androidXAppCompatVersion"
     implementation "com.google.android.material:material:$androidXMaterialVersion"
-    implementation "com.getcapacitor:capacitor-android:8.0.0"
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.2.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.6.1'
 }
 
-try {
-    def syncScript = file('../node_modules/@capacitor/android/capacitor/build.gradle')
-    if (syncScript.exists()) {
-        apply from: syncScript
-    }
-} catch (Exception e) {
-    logger.info("Unable to apply sync script: ${e.message}")
-}
+// Capacitor 从 node_modules 同步
+apply from: '../node_modules/@capacitor/android/capacitor/build.gradle'
