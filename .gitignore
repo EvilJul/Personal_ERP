@@ -45,7 +45,6 @@ next-env.d.ts
 .playwright-mcp/
 
 # Capacitor
-/android/
 /ios/
 *.apk
 *.aab
