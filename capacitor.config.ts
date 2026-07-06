@@ -3,7 +3,7 @@ import type { CapacitorConfig } from '@capacitor/cli';
 const config: CapacitorConfig = {
   appId: 'com.personal-erp.app',
   appName: 'Personal ERP',
-  webDir: 'out',
+  webDir: 'android/app/src/main/assets/www',
   server: {
     androidScheme: 'https',
     // 使用本地服务器（standalone 模式）
