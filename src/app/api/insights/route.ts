@@ -2,7 +2,6 @@ import { NextResponse } from 'next/server'
 import { isAuthenticated } from '@/lib/auth'
 import { getAllInsights } from '@/db/queries/insights'
 
-export const dynamic = 'force-dynamic'
 
 /** GET /api/insights - 获取洞察列表 */
 export async function GET() {

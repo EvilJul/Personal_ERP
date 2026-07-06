@@ -3,7 +3,6 @@ import { isAuthenticated } from '@/lib/auth'
 import { evaluateRules } from '@/engine/rules'
 import { performFullSync } from '@/lib/actual'
 
-export const dynamic = 'force-dynamic'
 
 /** POST /api/sync - 触发 Actual Budget 数据同步（长耗时操作） */
 export async function POST() {

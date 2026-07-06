@@ -23,11 +23,17 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Build Next.js static export
+      - name: Build Next.js standalone
         run: npx next build
         env:
           NODE_ENV: production
           BUILD_TARGET: capacitor
+
+      - name: Copy standalone server
+        run: |
+          mkdir -p android/app/src/main/assets/www
+          cp -r .next/standalone/* android/app/src/main/assets/www/
+          cp -r public android/app/src/main/assets/www/
 
       - name: Setup Java 17
         uses: actions/setup-java@v4

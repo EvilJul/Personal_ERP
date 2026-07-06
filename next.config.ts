@@ -1,10 +1,11 @@
 import type { NextConfig } from "next";
 
-// 通过 BUILD_TARGET=capacitor 启用 Capacitor 静态导出模式
+// 通过 BUILD_TARGET=capacitor 启用 Capacitor 构建模式
 const isCapacitor = process.env.BUILD_TARGET === 'capacitor'
 
 const nextConfig: NextConfig = {
-  output: isCapacitor ? 'export' : 'standalone',
+  // Capacitor 模式使用 standalone（包含 API 服务器）
+  output: isCapacitor ? 'standalone' : 'standalone',
   images: isCapacitor ? { unoptimized: true } : undefined,
   turbopack: {},
   typescript: {

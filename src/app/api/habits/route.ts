@@ -4,7 +4,6 @@ import { isAuthenticated } from '@/lib/auth'
 import { getAllHabits, createHabit } from '@/db/queries/habits'
 import { getGoalById } from '@/db/queries/goals'
 
-export const dynamic = 'force-dynamic'
 
 const CreateHabitSchema = z.object({
   title: z.string().min(1).max(100),

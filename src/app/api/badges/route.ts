@@ -2,7 +2,6 @@ import { NextResponse } from 'next/server'
 import { isAuthenticated } from '@/lib/auth'
 import { getAllBadgesWithUserStatus } from '@/db/queries/badges'
 
-export const dynamic = 'force-dynamic'
 
 export async function GET() {
   try {

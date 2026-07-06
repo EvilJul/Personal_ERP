@@ -7,7 +7,6 @@ import { isAuthenticated } from '@/lib/auth'
 import { getHabitById, getHabitEntry, markHabitEntry } from '@/db/queries/habits'
 import { evaluateRules } from '@/engine/rules'
 
-export const dynamic = 'force-dynamic'
 
 const CheckinSchema = z.object({
   date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, '日期格式必须为 YYYY-MM-DD'),

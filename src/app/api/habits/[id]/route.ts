@@ -4,7 +4,6 @@ import { isAuthenticated } from '@/lib/auth'
 import { getHabitById, updateHabit, deleteHabit } from '@/db/queries/habits'
 import { evaluateRules } from '@/engine/rules'
 
-export const dynamic = 'force-dynamic'
 
 const UpdateHabitSchema = z.object({
   title: z.string().min(1).max(100).optional(),

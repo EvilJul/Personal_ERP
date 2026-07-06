@@ -6,7 +6,6 @@ import { users } from '@/db/schema'
 import { eq } from 'drizzle-orm'
 import { encrypt } from '@/lib/crypto'
 
-export const dynamic = 'force-dynamic'
 
 const UpdateSettingsSchema = z.object({
   actualServerUrl: z.string().url().optional().nullable(),

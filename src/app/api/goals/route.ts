@@ -3,7 +3,6 @@ import { z } from 'zod'
 import { isAuthenticated } from '@/lib/auth'
 import { getAllGoals, createGoal } from '@/db/queries/goals'
 
-export const dynamic = 'force-dynamic'
 
 const CreateGoalSchema = z.object({
   title: z.string().min(1).max(100),

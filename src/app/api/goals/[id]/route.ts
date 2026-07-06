@@ -4,7 +4,6 @@ import { isAuthenticated } from '@/lib/auth'
 import { getGoalById, updateGoal, deleteGoal } from '@/db/queries/goals'
 import { evaluateRules } from '@/engine/rules'
 
-export const dynamic = 'force-dynamic'
 
 const UpdateGoalSchema = z.object({
   title: z.string().min(1).max(100).optional(),
