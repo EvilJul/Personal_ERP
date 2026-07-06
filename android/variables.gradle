@@ -1,6 +1,6 @@
 // Top-level variables
 ext {
-    minSdkVersion = 22
+    minSdkVersion = 24
     compileSdkVersion = 36
     targetSdkVersion = 36
     androidXAppCompatVersion = "1.7.0"
