@@ -179,7 +179,7 @@ export default async function DashboardPage() {
     .map(b => ({ id: b.id, icon: b.icon, name: b.name }))
 
   return (
-    <main className="min-h-screen pb-20 md:pb-4 animate-fade-in-up bg-gradient-to-br from-slate-50 via-white to-slate-50">
+    <main className="min-h-screen pb-20 md:pb-4 animate-fade-in-up bg-white/80">
       {/* 背景图案客户端同步 */}
       <BackgroundApplier />
       {/* 背景装饰层 - 抽象几何 SVG */}

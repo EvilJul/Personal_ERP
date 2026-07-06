@@ -6,16 +6,16 @@ const STORAGE_KEY = 'bg-pattern'
 
 /**
  * 背景图案应用组件
- * 在 body 开头插入一个全屏背景层，避免 CSS 层级问题
+ * 直接给 html 元素添加背景样式，避免被页面内容遮盖
  */
 export function BackgroundApplier() {
   useEffect(() => {
     const saved = localStorage.getItem(STORAGE_KEY) || 'none'
-    applyBackground(saved)
+    applyBg(saved)
 
     const handleStorage = (e: StorageEvent) => {
       if (e.key === STORAGE_KEY) {
-        applyBackground(e.newValue || 'none')
+        applyBg(e.newValue || 'none')
       }
     }
     window.addEventListener('storage', handleStorage)
@@ -25,24 +25,16 @@ export function BackgroundApplier() {
   return null
 }
 
-function applyBackground(pattern: string) {
-  // 移除旧的背景层
-  const existing = document.getElementById('bg-pattern-layer')
-  if (existing) existing.remove()
+function applyBg(pattern: string) {
+  const html = document.documentElement
 
-  if (pattern === 'none') return
+  // 移除旧的背景类
+  html.className = html.className.replace(/bg-pattern-\w+/g, '').trim()
 
-  // 创建新的背景层
-  const layer = document.createElement('div')
-  layer.id = 'bg-pattern-layer'
-  layer.style.cssText = `
-    position: fixed;
-    inset: 0;
-    z-index: -1;
-    pointer-events: none;
-  `
-  layer.className = `bg-pattern-${pattern}`
-  document.body.prepend(layer)
+  // 添加新的背景类
+  if (pattern !== 'none') {
+    html.classList.add(`bg-pattern-${pattern}`)
+  }
 }
 
 /**
@@ -50,7 +42,7 @@ function applyBackground(pattern: string) {
  */
 export function applyBackgroundPattern(pattern: string) {
   localStorage.setItem(STORAGE_KEY, pattern)
-  applyBackground(pattern)
+  applyBg(pattern)
 }
 
 /**
