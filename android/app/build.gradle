@@ -40,10 +40,8 @@ dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation "androidx.appcompat:appcompat:$androidXAppCompatVersion"
     implementation "com.google.android.material:material:$androidXMaterialVersion"
+    implementation project(':capacitor-android')
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.2.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.6.1'
 }
-
-// Capacitor 从 node_modules 同步
-apply from: "${rootProject.projectDir}/../node_modules/@capacitor/android/capacitor/build.gradle"
