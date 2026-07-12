@@ -49,3 +49,4 @@ next-env.d.ts
 *.apk
 *.aab
 .cap-build-tmp/
+.gstack/

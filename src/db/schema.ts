@@ -97,7 +97,9 @@ export const accounts = sqliteTable('accounts', {
   syncId: text('sync_id'), // Actual Budget 的 account ID
   createdAt: integer('created_at', { mode: 'timestamp' }).notNull().default(sql`(unixepoch())`),
   updatedAt: integer('updated_at', { mode: 'timestamp' }).notNull().default(sql`(unixepoch())`),
-})
+}, (table) => [
+  unique('accounts_sync_id_unique').on(table.syncId),
+])
 
 // ====== badges ======
 export const badges = sqliteTable('badges', {
@@ -135,6 +137,7 @@ export const transactions = sqliteTable('transactions', {
   syncId: text('sync_id'), // Actual Budget 的 transaction ID
   createdAt: integer('created_at', { mode: 'timestamp' }).notNull().default(sql`(unixepoch())`),
 }, (table) => [
+  unique('transactions_sync_id_unique').on(table.syncId),
   index('transaction_date_idx').on(table.date),
   index('transaction_account_idx').on(table.accountId),
 ])

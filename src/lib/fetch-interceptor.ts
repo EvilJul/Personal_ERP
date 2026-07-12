@@ -38,7 +38,7 @@ export function installFetchInterceptor() {
       // 等待数据库就绪
       await ensureBrowserDb()
 
-      const handler = matchRoute(method, pathname, init)
+      const handler = matchRoute(method, pathname, url, init)
       if (handler) {
         const result = await handler
         return new Response(JSON.stringify(result), {
@@ -67,7 +67,7 @@ export function installFetchInterceptor() {
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type RouteResult = Promise<Record<string, any>>
 
-function matchRoute(method: string, pathname: string, init?: RequestInit): RouteResult | null {
+function matchRoute(method: string, pathname: string, url: string, init?: RequestInit): RouteResult | null {
   const body = () => init?.body ? JSON.parse(init.body as string) : {}
 
   // ---- Goals ----
@@ -112,6 +112,11 @@ function matchRoute(method: string, pathname: string, init?: RequestInit): Route
 
   // ---- Auth ----
   if (pathname === '/api/auth/logout' && method === 'POST') return Promise.resolve({ success: true })
+
+  // ---- Finance ----
+  if (pathname === '/api/finance/accounts' && method === 'GET') return handleGetFinanceAccounts()
+  if (pathname === '/api/finance/transactions' && method === 'GET') return handleGetFinanceTransactions(url)
+  if (pathname === '/api/finance/categories' && method === 'GET') return handleGetFinanceCategories()
 
   // ---- Sync ----
   if (pathname === '/api/sync' && method === 'POST') {
@@ -377,37 +382,131 @@ async function handleGetInsights() {
   }
 }
 
+// ====== Finance 处理 ======
+
+async function handleGetFinanceAccounts() {
+  const rows = await dbAll('SELECT * FROM accounts ORDER BY created_at DESC')
+  return {
+    accounts: rows.map((row: Record<string, unknown>) => ({
+      id: row.id,
+      name: row.name,
+      type: row.type,
+      balance: Number(row.balance),
+      syncId: row.sync_id,
+      createdAt: row.created_at,
+      updatedAt: row.updated_at,
+    })),
+  }
+}
+
+async function handleGetFinanceTransactions(url: string) {
+  const { searchParams } = new URL(url, 'http://localhost')
+  const startDate = searchParams.get('startDate')
+  const endDate = searchParams.get('endDate')
+  const category = searchParams.get('category')
+
+  let sql = 'SELECT * FROM transactions'
+  const conditions: string[] = []
+  const params: unknown[] = []
+
+  if (category) {
+    conditions.push('category = ?')
+    params.push(category)
+  } else if (startDate && endDate) {
+    conditions.push('date >= ? AND date <= ?')
+    params.push(startDate, endDate)
+  } else {
+    // 默认最近 30 天
+    const end = new Date().toISOString().split('T')[0]
+    const start = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]
+    conditions.push('date >= ? AND date <= ?')
+    params.push(start, end)
+  }
+
+  if (conditions.length > 0) {
+    sql += ` WHERE ${conditions.join(' AND ')}`
+  }
+  sql += ' ORDER BY date DESC'
+
+  const rows = await dbAll(sql, params)
+  return {
+    transactions: rows.map((row: Record<string, unknown>) => ({
+      id: row.id,
+      accountId: row.account_id,
+      amount: Number(row.amount),
+      date: row.date,
+      payee: row.payee,
+      category: row.category,
+      syncId: row.sync_id,
+      createdAt: row.created_at,
+    })),
+  }
+}
+
+async function handleGetFinanceCategories() {
+  const rows = await dbAll('SELECT DISTINCT category FROM transactions WHERE category IS NOT NULL ORDER BY category')
+  return {
+    categories: rows.map((row: Record<string, unknown>) => ({
+      category: row.category,
+    })),
+  }
+}
+
 // ====== 查询辅助函数 ======
 
 async function dbAll(sql: string, params?: unknown[]) {
-  const { sqlite3, db } = await ensureBrowserDb()
+  for (let attempt = 0; attempt < 2; attempt++) {
+    try {
+      const { sqlite3, db } = await ensureBrowserDb()
 
-  if (params && params.length > 0) {
-    const result = await sqlite3.execWithParams(db, sql, params as (string | number | null)[])
-    return result.rows.map((row: (string | number | null)[]) => {
-      const obj: Record<string, unknown> = {}
-      result.columns.forEach((col: string, i: number) => {
-        obj[col] = row[i]
+      if (params && params.length > 0) {
+        const result = await sqlite3.execWithParams(db, sql, params as (string | number | null)[])
+        return result.rows.map((row: (string | number | null)[]) => {
+          const obj: Record<string, unknown> = {}
+          result.columns.forEach((col: string, i: number) => {
+            obj[col] = row[i]
+          })
+          return obj
+        })
+      }
+
+      const results: Record<string, unknown>[] = []
+      await sqlite3.exec(db, sql, (row: (string | number | null)[], columns: string[]) => {
+        const obj: Record<string, unknown> = {}
+        columns.forEach((col, i) => {
+          obj[col] = row[i]
+        })
+        results.push(obj)
       })
-      return obj
-    })
+      return results
+    } catch (error) {
+      if (attempt === 0) {
+        await new Promise(r => setTimeout(r, 100))
+      } else {
+        console.error('[fetch-interceptor] dbAll 查询失败:', error)
+        return []
+      }
+    }
   }
-
-  const results: Record<string, unknown>[] = []
-  await sqlite3.exec(db, sql, (row: (string | number | null)[], columns: string[]) => {
-    const obj: Record<string, unknown> = {}
-    columns.forEach((col, i) => {
-      obj[col] = row[i]
-    })
-    results.push(obj)
-  })
-  return results
+  return []
 }
 
 async function dbRun(sql: string, params?: unknown[]) {
-  const { sqlite3, db } = await ensureBrowserDb()
-  if (params && params.length > 0) {
-    return await sqlite3.run(db, sql, params as (string | number | null)[])
+  for (let attempt = 0; attempt < 2; attempt++) {
+    try {
+      const { sqlite3, db } = await ensureBrowserDb()
+      if (params && params.length > 0) {
+        return await sqlite3.run(db, sql, params as (string | number | null)[])
+      }
+      return await sqlite3.run(db, sql)
+    } catch (error) {
+      if (attempt === 0) {
+        await new Promise(r => setTimeout(r, 100))
+      } else {
+        console.error('[fetch-interceptor] dbRun 执行失败:', error)
+        return 0
+      }
+    }
   }
-  return await sqlite3.run(db, sql)
+  return 0
 }

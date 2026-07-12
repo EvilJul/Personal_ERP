@@ -48,7 +48,7 @@ const severityIcons: Record<InsightCardProps['severity'], string> = {
 }
 
 export function InsightCard({ message, severity, source, isFirst, className }: InsightCardProps) {
-  const styles = severityStyles[severity]
+  const styles = severityStyles[severity] ?? severityStyles.info
   return (
     <div
       className={cn(
@@ -62,12 +62,12 @@ export function InsightCard({ message, severity, source, isFirst, className }: I
     >
       <div className="flex items-start gap-3">
         <div className={cn('flex size-8 shrink-0 items-center justify-center rounded-lg', styles.iconBg)}>
-          <span className={cn('text-sm', styles.iconText)}>{severityIcons[severity]}</span>
+          <span className={cn('text-sm', styles.iconText)}>{severityIcons[severity] ?? '💡'}</span>
         </div>
         <div className="min-w-0 flex-1">
           <div className="flex items-center gap-2">
             <span className={cn('inline-block rounded-full px-2 py-0.5 text-xs font-medium', styles.badgeBg, styles.badgeText)}>
-              {severityLabel[severity]}
+              {severityLabel[severity] ?? '信息'}
             </span>
           </div>
           <p className="mt-2 text-sm leading-relaxed text-slate-900">{message}</p>

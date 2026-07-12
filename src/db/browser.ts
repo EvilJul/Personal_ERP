@@ -28,22 +28,31 @@ export async function ensureBrowserDb(): Promise<{ sqlite3: any; db: number }> {
 }
 
 async function initWaSqlite() {
-  // 动态导入 wa-sqlite（避免 SSR 问题）
-  const SQLiteESMFactory = (await import('wa-sqlite/dist/wa-sqlite-async.mjs')).default
-  const SQLiteModule = await import('wa-sqlite')
+  try {
+    // 动态导入 wa-sqlite（避免 SSR 问题）
+    const SQLiteESMFactory = (await import('wa-sqlite/dist/wa-sqlite-async.mjs')).default
+    const SQLiteModule = await import('wa-sqlite')
 
-  const module = await SQLiteESMFactory()
-  sqlite3 = SQLiteModule.Factory(module)
-  db = await sqlite3.open_v2('personal-erp')
+    const module = await SQLiteESMFactory()
+    sqlite3 = SQLiteModule.Factory(module)
+    db = await sqlite3.open_v2('personal-erp')
 
-  // 设置基本 pragma
-  await sqlite3.exec(db, 'PRAGMA busy_timeout = 5000')
+    // 设置基本 pragma
+    await sqlite3.exec(db, 'PRAGMA busy_timeout = 5000')
 
-  // 创建表
-  await createTables()
+    // 创建表
+    await createTables()
 
-  // 写入种子数据（幂等）
-  await seedData()
+    // 写入种子数据（幂等）
+    await seedData()
+  } catch (error) {
+    console.error('[browser] wa-sqlite 初始化失败:', error)
+    // 重置状态，允许后续重试
+    sqlite3 = null
+    db = null
+    initPromise = null
+    throw error
+  }
 }
 
 async function createTables() {

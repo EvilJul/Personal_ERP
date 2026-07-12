@@ -8,6 +8,7 @@ const navItems = [
   { href: '/', label: '洞察', emoji: '📊' },
   { href: '/goals', label: '目标', emoji: '🎯' },
   { href: '/habits', label: '习惯', emoji: '☑' },
+  { href: '/finance', label: '财务', emoji: '💰' },
 ] as const
 
 export function MobileNav() {
